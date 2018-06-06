@@ -1,0 +1,17 @@
+/*
+
+	-- SUtil --
+
+*/
+
+apply plugin: 'java-library'
+apply plugin: 'eclipse'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+}
+
