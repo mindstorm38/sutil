@@ -26,6 +26,13 @@ public abstract class BaseBuffer {
 		return this.bytes.length;
 	}
 	
+	public void reset() {
+		
+		this.bytes = new byte[0];
+		this.readIndex = 0;
+		
+	}
+	
 	protected void checkIndex(int idx) {
 		if ( idx < 0 || idx >= this.bytes.length ) throw new IndexOutOfBoundsException( "Invalid index : " + idx );
 	}
@@ -40,7 +47,8 @@ public abstract class BaseBuffer {
 	// WRITE \\
 	
 	public BaseBuffer writeBytes(byte[] bytes, int count) {
-		System.arraycopy( bytes, 0, this.bytes, this.allocate( count ), count );
+		int offset = this.allocate( count );
+		System.arraycopy( bytes, 0, this.bytes, offset, count );
 		return this;
 	}
 	
@@ -54,32 +62,45 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeShort(short shrt) {
-		ByteUtils.writeShort( this.bytes, this.allocate( 2 ), shrt );
+		int offset = this.allocate( 2 );
+		ByteUtils.writeShort( this.bytes, offset, shrt );
 		return this;
 	}
 	
 	public BaseBuffer writeInteger(int integer) {
-		ByteUtils.writeInteger( this.bytes, this.allocate( 4 ), integer );
+		int offset = this.allocate( 4 );
+		ByteUtils.writeInteger( this.bytes, offset, integer );
 		return this;
 	}
 	
 	public BaseBuffer writeLong(long lng) {
-		ByteUtils.writeLong( this.bytes, this.allocate( 8 ), lng );
+		int offset = this.allocate( 8 );
+		ByteUtils.writeLong( this.bytes, offset, lng );
 		return this;
 	}
 	
 	public BaseBuffer writeFloat(float flt) {
-		ByteUtils.writeFloat( this.bytes, this.allocate( 4 ), flt );
+		int offset = this.allocate( 4 );
+		ByteUtils.writeFloat( this.bytes, offset, flt );
 		return this;
 	}
 	
 	public BaseBuffer writeDouble(double dbl) {
-		ByteUtils.writeDouble( this.bytes, this.allocate( 8 ), dbl );
+		int offset = this.allocate( 8 );
+		ByteUtils.writeDouble( this.bytes, offset, dbl );
 		return this;
 	}
 	
 	public BaseBuffer writeBoolean(boolean bool) {
 		return this.writeByte( (byte) ( bool ? 0x0 : 0x1 ) );
+	}
+	
+	public BaseBuffer writeBuffer(BaseBuffer buffer, int count) {
+		return this.writeBytes( buffer.bytes, count );
+	}
+	
+	public BaseBuffer writeBuffer(BaseBuffer buffer) {
+		return this.writeBytes( buffer.bytes );
 	}
 	
 	// READ \\

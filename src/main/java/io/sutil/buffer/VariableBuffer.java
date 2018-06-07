@@ -14,8 +14,8 @@ public class VariableBuffer extends BaseBuffer {
 	protected int allocate(int count) {
 		
 		int offset = this.bytes.length;
-		byte[] newBytes = new byte[offset + count ];
-		System.arraycopy( this.bytes, 0, newBytes, 0, count );
+		byte[] newBytes = new byte[ offset + count ];
+		System.arraycopy( this.bytes, 0, newBytes, 0, offset );
 		this.bytes = newBytes;
 		return offset;
 		
