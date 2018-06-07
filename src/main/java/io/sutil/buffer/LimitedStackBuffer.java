@@ -42,7 +42,16 @@ public class LimitedStackBuffer extends BaseBuffer {
 	}
 	
 	public void clearReadBytes() {
-		// TODO
+		
+		if ( this.readIndex == 0 ) return;
+		
+		int newLength = this.bytes.length - this.readIndex;
+		byte[] newBytes = new byte[ newLength ];
+		System.arraycopy( this.bytes, this.readIndex, newBytes, 0, newLength );
+		this.bytes = newBytes;
+		
+		this.readIndex = 0;
+		
 	}
 	
 }
