@@ -4,9 +4,18 @@ public class ByteUtils {
 
 	// Write \\
 	
+	public static void writeUnsignedByte(byte[] array, int offset, short unsignedByte) {
+		array[ offset ] = (byte) ( unsignedByte & 0xFF );
+	}
+	
 	public static void writeShort(byte[] array, int offset, short shrt) {
 		array[ offset + 0 ] = (byte) ( shrt >> 8 );
 		array[ offset + 1 ] = (byte) ( shrt >> 0 );
+	}
+	
+	public static void writeUnsignedShort(byte[] array, int offset, int unsignedShort) {
+		array[ offset + 0 ] = (byte) ( unsignedShort >> 8 );
+		array[ offset + 1 ] = (byte) ( unsignedShort >> 0 );
 	}
 	
 	public static void writeInteger(byte[] array, int offset, int integer) {
@@ -14,6 +23,13 @@ public class ByteUtils {
 		array[ offset + 1 ] = (byte) ( integer >> 16 );
 		array[ offset + 2 ] = (byte) ( integer >> 8 );
 		array[ offset + 3 ] = (byte) ( integer >> 0 );
+	}
+	
+	public static void writeUnsignedInteger(byte[] array, int offset, long unsignedInteger) {
+		array[ offset + 0 ] = (byte) ( unsignedInteger >> 24 );
+		array[ offset + 1 ] = (byte) ( unsignedInteger >> 16 );
+		array[ offset + 2 ] = (byte) ( unsignedInteger >> 8 );
+		array[ offset + 3 ] = (byte) ( unsignedInteger >> 0 );
 	}
 	
 	public static void writeLong(byte[] array, int offset, long lng) {
@@ -37,9 +53,20 @@ public class ByteUtils {
 	
 	// Read \\
 	
+	public static short readUnsignedByte(byte[] array, int offset) {
+		return (short) array[ offset ];
+	}
+	
 	public static short readShort(byte[] array, int offset) {
 		return (short) (
 				( array[ offset + 0 ] ) << 8 |
+				( array[ offset + 1 ] & 0xFF )
+		);
+	}
+	
+	public static int readUnsignedShort(byte[] array, int offset) {
+		return (
+				( array[ offset + 0 ] & 0xFF ) << 8 |
 				( array[ offset + 1 ] & 0xFF )
 		);
 	}
@@ -50,6 +77,15 @@ public class ByteUtils {
 				( array[ offset + 1 ] & 0xFF ) << 16 |
 				( array[ offset + 2 ] & 0xFF ) << 8 |
 				( array[ offset + 3 ] & 0xFF )
+		);
+	}
+	
+	public static long readUnsignedInteger(byte[] array, int offset) {
+		return (long) (
+				( (long) array[ offset + 0 ] & 0xFF ) << 24 |
+				( (long) array[ offset + 1 ] & 0xFF ) << 16 |
+				( (long) array[ offset + 2 ] & 0xFF ) << 8 |
+				( (long) array[ offset + 3 ] & 0xFF )
 		);
 	}
 	
