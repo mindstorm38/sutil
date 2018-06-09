@@ -2,6 +2,7 @@ package io.sutil;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 public class ListUtils {
@@ -30,13 +31,11 @@ public class ListUtils {
 			if ( !contains( from, e, equalTester ) ) from.add( e );
 		} );
 		
-		List<E> removed = new ArrayList<>();
+		Iterator<E> it = from.iterator();
 		
-		from.forEach( e -> {
-			if ( !contains( to, e, equalTester ) ) removed.add( e );
-		} );
-		
-		from.removeAll( removed );
+		while ( it.hasNext() ) {
+			if ( !contains( to, it.next(), equalTester ) ) it.remove();
+		}
 		
 	}
 	
