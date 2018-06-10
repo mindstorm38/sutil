@@ -33,6 +33,14 @@ public abstract class BaseBuffer {
 		
 	}
 	
+	public FixedBuffer createFixedBuffer() {
+		
+		byte[] fixedBytes = new byte[ this.bytes.length ];
+		System.arraycopy( this.bytes, 0, fixedBytes, 0, this.bytes.length );
+		return new FixedBuffer( fixedBytes );
+		
+	}
+	
 	protected void checkIndex(int idx) {
 		if ( idx < 0 || idx >= this.bytes.length ) throw new IndexOutOfBoundsException( "Invalid index : " + idx );
 	}
