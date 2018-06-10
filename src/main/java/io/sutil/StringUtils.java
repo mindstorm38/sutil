@@ -1,5 +1,8 @@
 package io.sutil;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class StringUtils {
 
 	public static String byteArrayToHexString(byte[] bytes) {
@@ -15,6 +18,12 @@ public class StringUtils {
 	public static String byteToHexString(byte b) {
 		String s = Integer.toHexString( b );
 		return ( s.length() == 1 ? "0" : "" ) + s.toUpperCase();
+	}
+	
+	public static String getStackTraceString(Throwable t) {
+		StringWriter writer = new StringWriter();
+		t.printStackTrace( new PrintWriter( writer ) );
+		return writer.toString();
 	}
 	
 }
