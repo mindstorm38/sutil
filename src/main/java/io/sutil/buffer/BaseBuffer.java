@@ -222,7 +222,7 @@ public abstract class BaseBuffer {
 	// - Other
 	
 	public BaseBuffer writeBoolean(boolean bool) {
-		return this.writeByte( (byte) ( bool ? 0x0 : 0x1 ) );
+		return this.writeByte( (byte) ( bool ? 0x1 : 0x0 ) );
 	}
 	
 	public BaseBuffer writeBuffer(BaseBuffer buffer, int count) {
@@ -251,7 +251,7 @@ public abstract class BaseBuffer {
 	
 	private void increaseReadIndex(int count) {
 		this.readIndex += count;
-		this.checkIndex( this.readIndex );
+		if ( this.remaining() != 0 ) this.checkIndex( this.readIndex );
 	}
 	
 	// - Bytes array
