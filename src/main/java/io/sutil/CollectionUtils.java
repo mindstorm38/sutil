@@ -9,6 +9,15 @@ import java.util.Map;
 
 public class CollectionUtils {
 	
+	// ARRAY
+	
+	public static <E> int arrayIndexOf(E[] arr, E elt) {
+		for ( int i = 0; i < arr.length; i++ ) if ( arr[ i ] == elt ) return i;
+		return -1;
+	}
+	
+	// LIST
+	
 	@SafeVarargs
 	public static <E> List<E> createListInline(E...elts) {
 		List<E> l = new ArrayList<>();
@@ -44,6 +53,8 @@ public class CollectionUtils {
 	public static <E> void listDiff(List<E> from, List<E> to) {
 		listDiff( from, to, new EqualTester.EqualTesterDefault<>() );
 	}
+	
+	// MAP
 
 	public static <K, V> V getOrDefaultKey(Map<K, V> map, K key, K defkey) {
 		V o = map.get( key );
