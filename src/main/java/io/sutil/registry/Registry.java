@@ -65,4 +65,8 @@ public class Registry<K, V> {
 		return new ArrayList<>( this.map.values() );
 	}
 	
+	public V get(int idx) {
+		return this.values().get( 0 );
+	}
+	
 }
