@@ -1,10 +1,12 @@
 package io.sutil;
 
+import io.sutil.llv.LazyLoadFinalValue;
+
 public class JavaVersion {
 	
 	// Constants \\
 	
-	private static final LazyLoadValue<JavaVersion> currentJavaVersion = new LazyLoadValue<JavaVersion>() {
+	private static final LazyLoadFinalValue<JavaVersion> currentJavaVersion = new LazyLoadFinalValue<JavaVersion>() {
 		public JavaVersion create() {
 			return parse( System.getProperty("java.version") );
 		}
