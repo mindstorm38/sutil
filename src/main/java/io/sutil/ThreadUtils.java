@@ -6,4 +6,12 @@ public class ThreadUtils {
 		try { Thread.sleep( millis ); } catch (InterruptedException e) {}
 	}
 	
+	public static StackTraceElement[] getThreadStackTrace(Thread thread) {
+		return thread.getStackTrace();
+	}
+	
+	public static StackTraceElement[] getCurrentStackTrace() {
+		return Thread.currentThread().getStackTrace();
+	}
+	
 }

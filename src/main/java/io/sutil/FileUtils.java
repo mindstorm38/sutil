@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileUtils {
 
@@ -67,6 +69,15 @@ public class FileUtils {
 		is.close();
 		return bytes;
 		
+	}
+	
+	public static String getFileName(File file) {
+		return getFileName( file.getAbsolutePath() );
+	}
+	
+	public static String getFileName(String path) {
+		Path filePath = Paths.get( path );
+		return filePath.getName( filePath.getNameCount() - 1 ).toString();
 	}
 	
 }

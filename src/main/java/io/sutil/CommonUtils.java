@@ -9,5 +9,9 @@ public class CommonUtils {
 	public static double getTime() {
 		return System.nanoTime() / 1000000000.0;
 	}
+
+	public static long currentTimeSeconds() {
+		return System.currentTimeMillis() / 1000;
+	}
 	
 }

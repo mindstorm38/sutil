@@ -16,6 +16,13 @@ public class CollectionUtils {
 		return -1;
 	}
 	
+	public static <E> boolean arrayContains(E[] array, E elt) {
+		for ( E e : array )
+			if ( e.equals( elt ) )
+				return true;
+		return false;
+	}
+	
 	// LIST
 	
 	@SafeVarargs
@@ -52,6 +59,10 @@ public class CollectionUtils {
 	
 	public static <E> void listDiff(List<E> from, List<E> to) {
 		listDiff( from, to, new EqualTester.EqualTesterDefault<>() );
+	}
+	
+	public static <E> E getOrNull(List<E> list, int idx) {
+		return idx >= 0 && idx < list.size() ? list.get( idx ) : null;
 	}
 	
 	// MAP

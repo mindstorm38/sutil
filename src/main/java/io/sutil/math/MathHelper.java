@@ -77,4 +77,9 @@ public class MathHelper {
     	return Math.max( Math.min( value, high ), low );
     }
     
+    public static float interpolate(float alpha, float current, float last) {
+		if ( current == last ) return current;
+		return ( ( current - last ) * alpha ) + last;
+	}
+    
 }

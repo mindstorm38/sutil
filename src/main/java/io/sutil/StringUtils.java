@@ -20,6 +20,12 @@ public class StringUtils {
 		return ( s.length() == 1 ? "0" : "" ) + s.toUpperCase();
 	}
 	
+	public static String getStackTraceString(StackTraceElement[] elts) {
+		Throwable t = new Throwable();
+		t.setStackTrace( elts );
+		return getStackTraceString( t );
+	}
+	
 	public static String getStackTraceString(Throwable t) {
 		StringWriter writer = new StringWriter();
 		t.printStackTrace( new PrintWriter( writer ) );
