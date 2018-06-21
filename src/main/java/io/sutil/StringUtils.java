@@ -2,8 +2,11 @@ package io.sutil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 
 public class StringUtils {
+	
+	public static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
 
 	public static String byteArrayToHexString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
