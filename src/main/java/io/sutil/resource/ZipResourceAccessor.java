@@ -13,18 +13,26 @@ public class ZipResourceAccessor extends ResourceAccessor {
 
 	private final ZipFile zip;
 	
-	public ZipResourceAccessor(File file) throws IOException {
+	public ZipResourceAccessor(File file, String baseFolderPath) throws IOException {
+		
+		super( baseFolderPath );
+		
 		this.zip = new ZipFile( file );
+		
+	}
+	
+	public ZipResourceAccessor(File file) throws IOException {
+		this( file, "" );
 	}
 	
 	@Override
 	public boolean resourceExists(String path) {
-		return this.zip.getEntry( path ) != null;
+		return this.zip.getEntry( this.baseFolderPath + path ) != null;
 	}
 
 	@Override
 	public InputStream resourceInputStream(String path) {
-		ZipEntry entry = this.zip.getEntry( path );
+		ZipEntry entry = this.zip.getEntry( this.baseFolderPath + path );
 		if ( entry != null ) {
 			try {
 				this.zip.getInputStream( entry );
@@ -43,6 +51,8 @@ public class ZipResourceAccessor extends ResourceAccessor {
 		int basePathLength = basePath.length();
 		String name = null;
 		ZipEntry entry = null;
+		
+		basePath = this.baseFolderPath + basePath;
 		
 		while ( entries.hasMoreElements() ) {
 			

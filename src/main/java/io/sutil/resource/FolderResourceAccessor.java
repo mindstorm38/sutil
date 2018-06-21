@@ -12,7 +12,9 @@ public class FolderResourceAccessor extends ResourceAccessor {
 
 	private final File folder;
 	
-	public FolderResourceAccessor(File folder) {
+	public FolderResourceAccessor(File folder, String baseFolderPath) {
+		
+		super( baseFolderPath );
 		
 		if ( folder == null || !folder.isDirectory() ) throw new IllegalArgumentException("Invalid folder File instance");
 		
@@ -20,8 +22,12 @@ public class FolderResourceAccessor extends ResourceAccessor {
 		
 	}
 	
+	public FolderResourceAccessor(File folder) {
+		this( folder, "" );
+	}
+	
 	private File getFile(String path) {
-		return new File( this.folder, path );
+		return new File( this.folder, this.baseFolderPath + path );
 	}
 	
 	@Override

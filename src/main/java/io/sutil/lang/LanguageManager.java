@@ -69,7 +69,7 @@ public class LanguageManager {
 		for ( String langFolderPath : this.langsFolderPaths ) {
 			
 			for ( String langResPath : this.resourceAccessor.listResourcePaths( langFolderPath ) ) {
-				System.out.println( langResPath );
+				
 				this.parseLanguage( langResPath );
 				
 			}
