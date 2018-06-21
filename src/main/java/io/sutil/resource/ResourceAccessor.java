@@ -9,12 +9,16 @@ public abstract class ResourceAccessor {
 	
 	public ResourceAccessor(String baseFolderPath) {
 		
-		this.baseFolderPath = baseFolderPath == null || baseFolderPath.isEmpty() ? "" : baseFolderPath + "/";
+		this.baseFolderPath = baseFolderPath == null || baseFolderPath.isEmpty() ? "" : baseFolderPath + ( baseFolderPath.endsWith("/") ? "" : "/" );
 		
 	}
 	
 	public ResourceAccessor() {
 		this( null );
+	}
+	
+	public String getFullPath(String path) {
+		return this.baseFolderPath + path;
 	}
 	
 	public abstract boolean resourceExists(String path);
