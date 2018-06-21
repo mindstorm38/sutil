@@ -65,6 +65,16 @@ public class CollectionUtils {
 		return idx >= 0 && idx < list.size() ? list.get( idx ) : null;
 	}
 	
+	public static void stringListSubstring(List<String> list, int beginIndex, int endIndex) {
+		for ( int i = 0; i < list.size(); i++ )
+			list.set( i, list.get( i ).substring( beginIndex, endIndex ) );
+	}
+	
+	public static void stringListSubstring(List<String> list, int beginIndex) {
+		for ( int i = 0; i < list.size(); i++ )
+			list.set( i, list.get( i ).substring( beginIndex ) );
+	}
+	
 	// MAP
 
 	public static <K, V> V getOrDefaultKey(Map<K, V> map, K key, K defkey) {

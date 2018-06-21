@@ -15,7 +15,7 @@ import io.sutil.resource.ResourceAccessor;
 
 import static io.sutil.LoggerUtils.*;
 
-public class I18n {
+public class LanguageManager {
 	
 	// Constants \\
 	
@@ -35,7 +35,7 @@ public class I18n {
 	private Language defaultLanguage = null;
 	private Language currentLanguage = null;
 	
-	public I18n(ResourceAccessor resourceAccessor, String baseLangsFolder) {
+	public LanguageManager(ResourceAccessor resourceAccessor, String baseLangsFolder) {
 		
 		this.resourceAccessor = resourceAccessor;
 		this.langsFolderPaths = new ArrayList<>();
@@ -69,7 +69,7 @@ public class I18n {
 		for ( String langFolderPath : this.langsFolderPaths ) {
 			
 			for ( String langResPath : this.resourceAccessor.listResourcePaths( langFolderPath ) ) {
-				
+				System.out.println( langResPath );
 				this.parseLanguage( langResPath );
 				
 			}
