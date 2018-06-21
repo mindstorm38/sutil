@@ -8,7 +8,7 @@ public class StringUtils {
 	
 	public static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
 
-	public static String byteArrayToHexString(byte[] bytes) {
+	public static String byteArrayToHexArrayString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
 		for ( int i = 0; i < bytes.length; i++ ) {
@@ -19,8 +19,14 @@ public class StringUtils {
 	}
 	
 	public static String byteToHexString(byte b) {
-		String s = Integer.toHexString( b );
+		String s = Integer.toHexString( 0xFF & b );
 		return ( s.length() == 1 ? "0" : "" ) + s.toUpperCase();
+	}
+	
+	public static String byteArrayToHexString(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		for ( byte b : bytes ) sb.append( byteToHexString( b ) );
+		return sb.toString();
 	}
 	
 	public static String getStackTraceString(StackTraceElement[] elts) {
