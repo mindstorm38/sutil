@@ -181,7 +181,7 @@ public class LanguageManager {
 		String entry = this.currentLanguage.getEntry( key );
 		if ( entry == null ) return key;
 		for ( int i = 0; i < params.length; i++ ) {
-			entry = entry.replaceAll( "{" + i + "}", params[i].toString() );
+			entry = entry.replaceAll( Pattern.quote( "{" + i + "}" ), params[i].toString() );
 		}
 		return entry;
 	}
