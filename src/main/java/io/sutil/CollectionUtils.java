@@ -91,7 +91,7 @@ public class CollectionUtils {
 	public static <K, V> Map<K, V> createMapInline(Object...kva) {
 		Map<K, V> map = new HashMap<>();
 		try {
-			for ( int i = 0; i < kva.length; i++ ) {
+			for ( int i = 0; i < kva.length; i += 2 ) {
 				map.put( (K) kva[ i ], (V) kva[ i + 1 ] );
 			}
 		} catch (ClassCastException e) {
