@@ -29,6 +29,17 @@ public class StringUtils {
 		return sb.toString();
 	}
 	
+	public static String unsignedShortToHexString(int i) {
+		String s = Integer.toHexString( 0xFFFF & i );
+		return getFilledString( '0', Short.BYTES * 2 - s.length() ) + s.toUpperCase();
+	}
+	
+	public static String getFilledString(char c, int count) {
+		StringBuilder sb = new StringBuilder();
+		for ( int i = 0; i < count; i++ ) sb.append( c );
+		return sb.toString();
+	}
+	
 	public static String getStackTraceString(StackTraceElement[] elts) {
 		Throwable t = new Throwable();
 		t.setStackTrace( elts );
