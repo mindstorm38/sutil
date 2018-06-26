@@ -1,9 +1,15 @@
 package io.sutil.buffer;
 
+import java.nio.charset.Charset;
+
+import io.sutil.StringUtils;
+
 public abstract class BaseBuffer {
 	
 	protected byte[] bytes;
 	protected int readIndex = 0;
+	
+	protected Charset charset = StringUtils.CHARSET_UTF_8; 
 	
 	public BaseBuffer(byte[] bytes) {
 		
@@ -67,6 +73,13 @@ public abstract class BaseBuffer {
 		this.checkIndex( offset );
 		int dif = offset - this.bytes.length;
 		if ( dif > 0 ) this.allocate( dif );
+	}
+	
+	// Charset
+	
+	public void setCharset(Charset charset) {
+		if ( charset == null ) throw new NullPointerException();
+		this.charset = charset;
 	}
 	
 	// WRITE \\
@@ -225,12 +238,38 @@ public abstract class BaseBuffer {
 		return this.writeByte( (byte) ( bool ? 0x1 : 0x0 ) );
 	}
 	
+	public BaseBuffer writeBooleanOffset(boolean bool, int offset) {
+		return this.writeByteOffset( (byte) ( bool ? 0x1 : 0x0 ), offset );
+	}
+	
 	public BaseBuffer writeBuffer(BaseBuffer buffer, int count) {
 		return this.writeBytes( buffer.bytes, count );
 	}
 	
 	public BaseBuffer writeBuffer(BaseBuffer buffer) {
 		return this.writeBytes( buffer.bytes );
+	}
+	
+	public BaseBuffer writeString(String string) {
+		byte[] bytes = string.getBytes( this.charset );
+		return this.writeBytes( bytes );
+	}
+	
+	public BaseBuffer writeStringOffset(String string, int offset) {
+		byte[] bytes = string.getBytes( this.charset );
+		return this.writeBytesOffset( bytes, offset );
+	}
+	
+	public BaseBuffer writeStringIndexed(String string) {
+		byte[] bytes = string.getBytes( this.charset );
+		this.writeInteger( bytes.length );
+		return this.writeBytes( bytes );
+	}
+	
+	public BaseBuffer writeStringIndexedOffset(String string, int offset) {
+		byte[] bytes = string.getBytes( this.charset );
+		this.writeIntegerOffset( bytes.length, offset );
+		return this.writeBytesOffset( bytes, offset + Integer.BYTES );
 	}
 	
 	// READ \\
@@ -382,6 +421,32 @@ public abstract class BaseBuffer {
 	
 	public boolean readBoolean() {
 		return this.readByte() == 0x1;
+	}
+	
+	public boolean readBooleanOffset(int offset) {
+		return this.readByteOffset( offset ) == 0x1;
+	}
+	
+	public String readString(int length) {
+		byte[] bytes = this.readBytes( length );
+		return new String( bytes, this.charset );
+	}
+	
+	public String readStringOffset(int offset, int length) {
+		byte[] bytes = this.readBytesOffset( offset, length );
+		return new String( bytes, this.charset );
+	}
+	
+	public String readStringIndexed() {
+		int length = this.readInteger();
+		byte[] bytes = this.readBytes( length );
+		return new String( bytes, this.charset );
+	}
+	
+	public String readStringIndexedOffset(int offset) {
+		int length = this.readIntegerOffset( offset );
+		byte[] bytes = this.readBytesOffset( offset + Integer.BYTES, length );
+		return new String( bytes, this.charset );
 	}
 	
 }
