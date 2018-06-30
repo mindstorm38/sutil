@@ -31,6 +31,10 @@ public class TextBuilder {
 		return this.append('\t');
 	}
 	
+	public TextBuilder space() {
+		return this.append(' ');
+	}
+	
 	@Override
 	public String toString() {
 		return new String( this.data );
