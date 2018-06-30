@@ -27,6 +27,10 @@ public class TextBuilder {
 		return this.append('\n');
 	}
 	
+	public TextBuilder tag() {
+		return this.append('\t');
+	}
+	
 	@Override
 	public String toString() {
 		return new String( this.data );
