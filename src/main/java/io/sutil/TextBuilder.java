@@ -27,7 +27,7 @@ public class TextBuilder {
 		return this.append('\n');
 	}
 	
-	public TextBuilder tag() {
+	public TextBuilder tab() {
 		return this.append('\t');
 	}
 	
