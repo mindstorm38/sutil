@@ -1,5 +1,6 @@
 package io.sutil;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -77,7 +78,16 @@ public class CollectionUtils {
 	
 	@SuppressWarnings("unchecked")
 	public static <E> E[] toArray(List<E> list) {
-		return (E[]) list.toArray();
+		
+		try {
+			
+			E[] arr = (E[]) Array.newInstance( Class.forName( list.getClass().getTypeParameters()[0].getName() ), list.size() );
+			return list.toArray( arr );
+			
+		} catch (NegativeArraySizeException | ClassNotFoundException e) {
+			return null;
+		}
+		
 	}
 	
 	// MAP
