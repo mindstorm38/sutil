@@ -77,14 +77,14 @@ public class CollectionUtils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <E> E[] toArray(List<E> list) {
+	public static <E> E[] toArray(List<E> list, Class<E> clazz) {
 		
 		try {
 			
-			E[] arr = (E[]) Array.newInstance( Class.forName( list.getClass().getTypeParameters()[0].getName() ), list.size() );
+			E[] arr = (E[]) Array.newInstance( clazz, list.size() );
 			return list.toArray( arr );
 			
-		} catch (NegativeArraySizeException | ClassNotFoundException e) {
+		} catch (NegativeArraySizeException e) {
 			return null;
 		}
 		
