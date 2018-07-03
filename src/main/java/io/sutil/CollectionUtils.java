@@ -75,6 +75,11 @@ public class CollectionUtils {
 			list.set( i, list.get( i ).substring( beginIndex ) );
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <E> E[] toArray(List<E> list) {
+		return (E[]) list.toArray();
+	}
+	
 	// MAP
 
 	public static <K, V> V getOrDefaultKey(Map<K, V> map, K key, K defkey) {
