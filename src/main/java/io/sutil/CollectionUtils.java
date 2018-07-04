@@ -1,5 +1,6 @@
 package io.sutil;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -73,6 +74,20 @@ public class CollectionUtils {
 	public static void stringListSubstring(List<String> list, int beginIndex) {
 		for ( int i = 0; i < list.size(); i++ )
 			list.set( i, list.get( i ).substring( beginIndex ) );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E> E[] toArray(List<E> list, Class<E> clazz) {
+		
+		try {
+			
+			E[] arr = (E[]) Array.newInstance( clazz, list.size() );
+			return list.toArray( arr );
+			
+		} catch (NegativeArraySizeException e) {
+			return null;
+		}
+		
 	}
 	
 	// MAP

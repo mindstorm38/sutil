@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -34,12 +35,14 @@ public class FileUtils {
 
 	public static void writeBytesToFile(File file, byte[] bytes) throws IOException {
 		
-		FileOutputStream out = new FileOutputStream(file);
-		
-		out.write(bytes);
-		
+		FileOutputStream out = new FileOutputStream( file );
+		out.write( bytes );
 		out.close();
 		
+	}
+	
+	public static void writeStringToFile(File file, String string, Charset charset) throws IOException {
+		writeBytesToFile( file, string.getBytes( charset ) );
 	}
 
 	public static byte[] getBytesFromFile(File file) throws IOException {
