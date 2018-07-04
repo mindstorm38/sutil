@@ -8,4 +8,9 @@ public class ReflectUtils {
 		}
 	}
 	
+	public static <E> E safecast(Object buffer, Class<E> clazz) {
+		if ( !clazz.isAssignableFrom( buffer.getClass() ) ) return null;
+		return clazz.cast( buffer );
+	}
+	
 }
