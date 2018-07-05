@@ -3,6 +3,7 @@ package io.sutil.lang;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.sutil.StringUtils;
 import io.sutil.resource.ResourceAccessor;
 
 import static io.sutil.LoggerUtils.*;
@@ -19,7 +21,6 @@ public class LanguageManager {
 	
 	// Constants \\
 	
-	public static final String LANGS_FOLDER						= "langs";
 	public static final Pattern LANG_IDENTIFIER_PATTERN			= Pattern.compile("#identifier (.+)");
 	public static final Pattern LANG_NAME_PATTERN				= Pattern.compile("#name (.+)");
 	public static final Pattern LANG_ENTRY_PATTERN				= Pattern.compile("^([a-zA-Z0-9_.-]+)=(.+)$");
@@ -29,6 +30,7 @@ public class LanguageManager {
 	
 	private final ResourceAccessor resourceAccessor;
 	private final List<String> langsFolderPaths;
+	private Charset charset;
 	
 	private final Map<String, Language> availableLanguages = new HashMap<>();
 	
@@ -40,6 +42,7 @@ public class LanguageManager {
 		this.resourceAccessor = resourceAccessor;
 		this.langsFolderPaths = new ArrayList<>();
 		this.langsFolderPaths.add( baseLangsFolder );
+		this.charset = StringUtils.CHARSET_UTF_8;
 		
 	}
 	
@@ -47,6 +50,10 @@ public class LanguageManager {
 	
 	public void addLangFolderPath(String path) {
 		this.langsFolderPaths.add( path );
+	}
+	
+	public void setCharset(Charset charset) {
+		this.charset = charset;
 	}
 	
 	public void init() throws Exception {
@@ -82,7 +89,7 @@ public class LanguageManager {
 		
 		try {
 			
-			BufferedReader reader = new BufferedReader( new InputStreamReader( this.resourceAccessor.resourceInputStream( path ) ) );
+			BufferedReader reader = new BufferedReader( new InputStreamReader( this.resourceAccessor.resourceInputStream( path ), this.charset ) );
 			
 			String name = null;
 			String identifier = null;
@@ -146,7 +153,7 @@ public class LanguageManager {
 		
 		try {
 			
-			BufferedReader reader = new BufferedReader( new InputStreamReader( this.resourceAccessor.resourceInputStream( language.getPath() ) ) );
+			BufferedReader reader = new BufferedReader( new InputStreamReader( this.resourceAccessor.resourceInputStream( language.getPath() ), this.charset ) );
 			
 			language.entries.clear();
 			
