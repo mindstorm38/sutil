@@ -35,7 +35,7 @@ public class ZipResourceAccessor extends ResourceAccessor {
 		ZipEntry entry = this.zip.getEntry( this.baseFolderPath + path );
 		if ( entry != null ) {
 			try {
-				this.zip.getInputStream( entry );
+				return this.zip.getInputStream( entry );
 			} catch (IOException e) {
 				return null;
 			}
@@ -46,22 +46,27 @@ public class ZipResourceAccessor extends ResourceAccessor {
 	@Override
 	public List<String> listResourcePaths(String basePath) {
 		
+		basePath = this.baseFolderPath + basePath;
+		
 		Enumeration<? extends ZipEntry> entries = this.zip.entries();
 		List<String> list = new ArrayList<>();
-		int basePathLength = basePath.length();
-		String name = null;
-		ZipEntry entry = null;
 		
-		basePath = this.baseFolderPath + basePath;
+		int baseFolderPathLength = this.baseFolderPath.length();
+		
+		String name;
+		ZipEntry entry;
 		
 		while ( entries.hasMoreElements() ) {
 			
 			entry = entries.nextElement();
 			
-			name = entry.getName().substring( basePathLength );
+			name = entry.getName();
 			
 			if ( !name.startsWith( basePath ) ) continue;
-			if ( name.indexOf('/') != -1 ) continue;
+			name = name.substring( baseFolderPathLength );
+			
+			if ( name.endsWith("/") ) continue;
+			if ( name.startsWith("/") ) name = name.substring( 1 );
 			
 			list.add( name );
 			
