@@ -39,6 +39,7 @@ public class TextBuilder {
 	}
 	
 	public TextBuilder nl(int count) {
+		if ( count <= 0 ) return this;
 		return this.append( StringUtils.getFilledString( '\n', count ) );
 	}
 	
@@ -47,6 +48,7 @@ public class TextBuilder {
 	}
 	
 	public TextBuilder tab(int count) {
+		if ( count <= 0 ) return this;
 		return this.append( StringUtils.getFilledString( '\t', count ) );
 	}
 	
@@ -55,6 +57,7 @@ public class TextBuilder {
 	}
 	
 	public TextBuilder space(int count) {
+		if ( count <= 0 ) return this;
 		return this.append( StringUtils.getFilledString( ' ', count ) );
 	}
 	
