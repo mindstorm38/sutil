@@ -38,12 +38,24 @@ public class TextBuilder {
 		return this.append('\n');
 	}
 	
+	public TextBuilder nl(int count) {
+		return this.append( StringUtils.getFilledString( '\n', count ) );
+	}
+	
 	public TextBuilder tab() {
 		return this.append('\t');
 	}
 	
+	public TextBuilder tab(int count) {
+		return this.append( StringUtils.getFilledString( '\t', count ) );
+	}
+	
 	public TextBuilder space() {
 		return this.append(' ');
+	}
+	
+	public TextBuilder space(int count) {
+		return this.append( StringUtils.getFilledString( ' ', count ) );
 	}
 	
 	@Override
