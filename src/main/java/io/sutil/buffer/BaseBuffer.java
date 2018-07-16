@@ -18,23 +18,37 @@ public abstract class BaseBuffer {
 	
 	protected Charset charset = StringUtils.CHARSET_UTF_8; 
 	
-	public BaseBuffer(byte[] bytes) {
+	public BaseBuffer(ByteOrder order, byte[] bytes) {
+		
+		this.setByteOrder( order );
 		
 		this.bytes = new byte[ bytes.length ];
 		System.arraycopy( bytes, 0, this.bytes, 0, bytes.length );
 		
 	}
 	
-	public BaseBuffer() {
+	public BaseBuffer(byte[] bytes) {
+		this( ByteOrder.nativeOrder(), bytes );
+	}
+	
+	public BaseBuffer(ByteOrder order, int capacity) {
+		
+		this.setByteOrder( order );
 		
 		this.bytes = new byte[0];
 		
 	}
 	
-	{
-		
-		this.setByteOrder( ByteOrder.nativeOrder() );
-		
+	public BaseBuffer(int capacity) {
+		this( ByteOrder.nativeOrder(), capacity );
+	}
+	
+	public BaseBuffer(ByteOrder order) {
+		this( order, 0 );
+	}
+	
+	public BaseBuffer() {
+		this( 0 );
 	}
 	
 	public byte[] getBytes() {

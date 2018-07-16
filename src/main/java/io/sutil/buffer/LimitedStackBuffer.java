@@ -1,12 +1,28 @@
 package io.sutil.buffer;
 
+import java.nio.ByteOrder;
+
 public class LimitedStackBuffer extends BaseBuffer {
 
 	private final int maxCapacity;
 	
+	public LimitedStackBuffer(ByteOrder order, int maxCapacity, byte[] bytes) {
+		
+		super( order, bytes );
+		this.maxCapacity = maxCapacity;
+		
+	}
+	
 	public LimitedStackBuffer(int maxCapacity, byte[] bytes) {
 		
 		super( bytes );
+		this.maxCapacity = maxCapacity;
+		
+	}
+	
+	public LimitedStackBuffer(ByteOrder order, int maxCapacity) {
+		
+		super( order );
 		this.maxCapacity = maxCapacity;
 		
 	}

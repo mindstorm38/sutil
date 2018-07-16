@@ -1,9 +1,27 @@
 package io.sutil.buffer;
 
+import java.nio.ByteOrder;
+
 public class VariableBuffer extends BaseBuffer {
+	
+	public VariableBuffer(ByteOrder order, byte[] bytes) {
+		super( order, bytes );
+	}
 	
 	public VariableBuffer(byte[] bytes) {
 		super( bytes );
+	}
+	
+	public VariableBuffer(ByteOrder order, int capacity) {
+		super( order, capacity );
+	}
+	
+	public VariableBuffer(int capacity) {
+		super( capacity );
+	}
+	
+	public VariableBuffer(ByteOrder order) {
+		super( order );
 	}
 	
 	public VariableBuffer() {

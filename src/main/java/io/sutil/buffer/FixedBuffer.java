@@ -1,22 +1,28 @@
 package io.sutil.buffer;
 
+import java.nio.ByteOrder;
+
 public class FixedBuffer extends BaseBuffer {
 
+	public FixedBuffer(ByteOrder order, byte[] bytes) {
+		super( order, bytes );
+	}
+	
 	public FixedBuffer(byte[] bytes) {
-		super(bytes);
+		super( bytes );
 	}
 	
-	public FixedBuffer(int count) {
-		this.bytes = new byte[ count ];
+	public FixedBuffer(ByteOrder order, int capacity) {
+		super( order, capacity );
 	}
 	
-	private IllegalStateException cantAllocateException() {
-		return new IllegalStateException("Can't allocate new bytes in FixedBuffer");
+	public FixedBuffer(int capacity) {
+		super( capacity );
 	}
 	
 	@Override
 	protected int allocate(int count) {
-		throw this.cantAllocateException();
+		throw new IllegalStateException("Can't allocate new bytes in FixedBuffer");
 	}
 	
 }
