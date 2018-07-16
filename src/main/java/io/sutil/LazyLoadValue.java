@@ -1,4 +1,4 @@
-package io.sutil.llv;
+package io.sutil;
 
 /**
  * 
@@ -8,12 +8,12 @@ package io.sutil.llv;
  *
  * @param <T> Value type
  */
-public abstract class LazyLoadFinalValue<T> {
+public abstract class LazyLoadValue<T> {
 	
 	protected T value;
 	protected boolean loaded;
 	
-	public LazyLoadFinalValue() {
+	public LazyLoadValue() {
 		
 		this.value = null;
 		this.loaded = false;
@@ -33,5 +33,11 @@ public abstract class LazyLoadFinalValue<T> {
 	}
 	
 	public abstract T create();
+	
+	public void reset() {
+		
+		this.loaded = false;
+		
+	}
 	
 }
