@@ -69,6 +69,9 @@ public class LimitedStackBuffer extends BaseBuffer {
 		this.readIndex -= count;
 		if ( this.readIndex < 0 ) this.readIndex = 0;
 		
+		this.writeIndex -= count;
+		if ( this.writeIndex < 0 ) this.writeIndex = 0;
+		
 	}
 	
 	public void clearReadBytes() {

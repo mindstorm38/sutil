@@ -30,6 +30,11 @@ public class StringUtils {
 		return sb.toString();
 	}
 	
+	public static String unsignedByteToHexString(short shrt) {
+		String s = Integer.toHexString( 0xFF & shrt );
+		return getFilledString( '0', 2 - s.length() ) + s.toUpperCase();
+	}
+	
 	public static String unsignedShortToHexString(int i) {
 		String s = Integer.toHexString( 0xFFFF & i );
 		return getFilledString( '0', Short.BYTES * 2 - s.length() ) + s.toUpperCase();

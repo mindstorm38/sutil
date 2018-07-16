@@ -63,6 +63,7 @@ public abstract class BaseBuffer {
 		
 		this.bytes = new byte[0];
 		this.readIndex = 0;
+		this.writeIndex = 0;
 		
 	}
 	
@@ -94,14 +95,14 @@ public abstract class BaseBuffer {
 	 */
 	protected abstract int allocate(int count);
 	
-	protected void allocateOffset(int offset, int count) {
-		this.checkIndex( offset );
+	protected void allocateOffset(int offset, int count, boolean check) {
+		if ( check ) this.checkIndex( offset );
 		int dif = offset + count - this.bytes.length;
 		if ( dif > 0 ) this.allocate( dif );
 	}
 	
-	protected void allocateOffset(int offset) {
-		this.checkIndex( offset );
+	protected void allocateOffset(int offset, boolean check) {
+		if ( check ) this.checkIndex( offset );
 		int dif = offset + 1 - this.bytes.length;
 		if ( dif > 0 ) this.allocate( dif );
 	}
@@ -149,7 +150,7 @@ public abstract class BaseBuffer {
 	// - Bytes array
 	
 	public BaseBuffer writeBytes(byte[] bytes, int count) {
-		this.allocateOffset( this.writeIndex, count );
+		this.allocateOffset( this.writeIndex, count, false );
 		// int offset = this.allocate( count ); TODO
 		System.arraycopy( bytes, 0, this.bytes, this.writeIndex, count );
 		this.increaseWriteIndex( count );
@@ -161,7 +162,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeBytesOffset(byte[] bytes, int offset, int count) {
-		this.allocateOffset( offset, count );
+		this.allocateOffset( offset, count, true );
 		System.arraycopy( bytes, 0, this.bytes, offset, count );
 		return this;
 	}
@@ -173,7 +174,7 @@ public abstract class BaseBuffer {
 	// - Byte
 	
 	public BaseBuffer writeByte(byte byt) {
-		this.allocateOffset( this.writeIndex );
+		this.allocateOffset( this.writeIndex, false );
 		// int offset = this.allocate( 1 ); TODO
 		this.bytes[ this.writeIndex ] = byt;
 		this.increaseWriteIndex( 1 );
@@ -181,7 +182,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeByteOffset(byte byt, int offset) {
-		this.allocateOffset( offset );
+		this.allocateOffset( offset, true );
 		this.bytes[ offset ] = byt;
 		return this;
 	}
@@ -189,7 +190,7 @@ public abstract class BaseBuffer {
 	// - Unsigned byte
 	
 	public BaseBuffer writeUnsignedByte(short unsignedByte) {
-		this.allocateOffset( this.writeIndex );
+		this.allocateOffset( this.writeIndex, false );
 		// int offset = this.allocate( 1 ); TODO
 		ByteUtils.writeUnsignedByte( this.bytes, this.writeIndex, unsignedByte );
 		this.increaseWriteIndex( 1 );
@@ -197,7 +198,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeUnsignedByteOffset(short unsignedByte, int offset) {
-		this.allocateOffset( offset );
+		this.allocateOffset( offset, true );
 		ByteUtils.writeUnsignedByte( this.bytes, offset, unsignedByte );
 		return this;
 	}
@@ -205,7 +206,7 @@ public abstract class BaseBuffer {
 	// - Short
 	
 	public BaseBuffer writeShort(short shrt) {
-		this.allocateOffset( this.writeIndex, 2 );
+		this.allocateOffset( this.writeIndex, 2, false );
 		// int offset = this.allocate( 2 ); TODO
 		ByteUtils.writeShort( this.bytes, this.writeIndex, shrt, this.be );
 		this.increaseWriteIndex( 2 );
@@ -213,7 +214,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeShortOffset(short shrt, int offset) {
-		this.allocateOffset( offset, 2 );
+		this.allocateOffset( offset, 2, true );
 		ByteUtils.writeShort( this.bytes, offset, shrt, this.be );
 		return this;
 	}
@@ -221,7 +222,7 @@ public abstract class BaseBuffer {
 	// - Unsigned Short
 	
 	public BaseBuffer writeUnsignedShort(int unsignedShort) {
-		this.allocateOffset( this.writeIndex, 2 );
+		this.allocateOffset( this.writeIndex, 2, false );
 		// int offset = this.allocate( 2 ); TODO
 		ByteUtils.writeUnsignedShort( this.bytes, this.writeIndex, unsignedShort, this.be );
 		this.increaseWriteIndex( 2 );
@@ -229,7 +230,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeUnsignedShortOffset(int unsignedShort, int offset) {
-		this.allocateOffset( offset, 2 );
+		this.allocateOffset( offset, 2, true );
 		ByteUtils.writeUnsignedShort( this.bytes, offset, unsignedShort, this.be );
 		return this;
 	}
@@ -237,7 +238,7 @@ public abstract class BaseBuffer {
 	// - Integer
 	
 	public BaseBuffer writeInteger(int integer) {
-		this.allocateOffset( this.writeIndex, 4 );
+		this.allocateOffset( this.writeIndex, 4, false );
 		// int offset = this.allocate( 4 ); TODO
 		ByteUtils.writeInteger( this.bytes, this.writeIndex, integer, this.be );
 		this.increaseWriteIndex( 4 );
@@ -245,7 +246,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeIntegerOffset(int integer, int offset) {
-		this.allocateOffset( offset, 4 );
+		this.allocateOffset( offset, 4, true );
 		ByteUtils.writeInteger( this.bytes, offset, integer, this.be );
 		return this;
 	}
@@ -253,7 +254,7 @@ public abstract class BaseBuffer {
 	// - Unsigned Integer
 	
 	public BaseBuffer writeUnsignedInteger(long unsignedInteger) {
-		this.allocateOffset( this.writeIndex, 4 );
+		this.allocateOffset( this.writeIndex, 4, false );
 		// int offset = this.allocate( 4 ); TODO
 		ByteUtils.writeUnsignedInteger( this.bytes, this.writeIndex, unsignedInteger, this.be );
 		this.increaseWriteIndex( 4 );
@@ -261,7 +262,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeUnsignedIntegerOffset(long unsignedInteger, int offset) {
-		this.allocateOffset( offset, 4 );
+		this.allocateOffset( offset, 4, true );
 		ByteUtils.writeUnsignedInteger( this.bytes, offset, unsignedInteger, this.be );
 		return this;
 	}
@@ -269,7 +270,7 @@ public abstract class BaseBuffer {
 	// - Long
 	
 	public BaseBuffer writeLong(long lng) {
-		this.allocateOffset( this.writeIndex, 8 );
+		this.allocateOffset( this.writeIndex, 8, false );
 		// int offset = this.allocate( 8 ); TODO
 		ByteUtils.writeLong( this.bytes, this.writeIndex, lng, this.be );
 		this.increaseWriteIndex( 8 );
@@ -277,7 +278,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeLongOffset(long lng, int offset) {
-		this.allocateOffset( offset, 8 );
+		this.allocateOffset( offset, 8, true );
 		ByteUtils.writeLong( this.bytes, offset, lng, this.be );
 		return this;
 	}
@@ -285,7 +286,7 @@ public abstract class BaseBuffer {
 	// - Float
 	
 	public BaseBuffer writeFloat(float flt) {
-		this.allocateOffset( this.writeIndex, 4 );
+		this.allocateOffset( this.writeIndex, 4, false );
 		// int offset = this.allocate( 4 ); TODO
 		ByteUtils.writeFloat( this.bytes, this.writeIndex, flt, this.be );
 		this.increaseWriteIndex( 4 );
@@ -293,7 +294,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeFloatOffset(float flt, int offset) {
-		this.allocateOffset( offset, 4 );
+		this.allocateOffset( offset, 4, true );
 		ByteUtils.writeFloat( this.bytes, offset, flt, this.be );
 		return this;
 	}
@@ -301,7 +302,7 @@ public abstract class BaseBuffer {
 	// - Double
 	
 	public BaseBuffer writeDouble(double dbl) {
-		this.allocateOffset( this.writeIndex, 8 );
+		this.allocateOffset( this.writeIndex, 8, false );
 		// int offset = this.allocate( 8 ); TODO
 		ByteUtils.writeDouble( this.bytes, this.writeIndex, dbl, this.be );
 		this.increaseWriteIndex( 8 );
@@ -309,7 +310,7 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeDoubleOffset(double dbl, int offset) {
-		this.allocateOffset( offset, 8 );
+		this.allocateOffset( offset, 8, true );
 		ByteUtils.writeDouble( this.bytes, offset, dbl, this.be );
 		return this;
 	}

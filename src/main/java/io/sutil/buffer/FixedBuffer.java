@@ -25,4 +25,9 @@ public class FixedBuffer extends BaseBuffer {
 		throw new IllegalStateException("Can't allocate new bytes in FixedBuffer");
 	}
 	
+	@Override
+	public void reset() {
+		throw new IllegalStateException("Can't reset a FixedBuffer");
+	}
+	
 }
