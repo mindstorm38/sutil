@@ -6,7 +6,8 @@ import java.nio.charset.Charset;
 
 public class StringUtils {
 	
-	public static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
+	public static final Charset CHARSET_UTF_8		= Charset.forName("UTF-8");
+	public static final Charset CHARSET_US_ASCII	= Charset.forName("US-ASCII");
 
 	public static String byteArrayToHexArrayString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
