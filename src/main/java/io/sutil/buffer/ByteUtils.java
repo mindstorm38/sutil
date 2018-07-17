@@ -136,7 +136,7 @@ public class ByteUtils {
 	// Read \\
 	
 	public static short readUnsignedByte(byte[] array, int offset) {
-		return (short) array[ offset ];
+		return (short) ( array[ offset ] & 0xFF );
 	}
 	
 	public static short readShort(byte[] array, int offset, boolean be) {
