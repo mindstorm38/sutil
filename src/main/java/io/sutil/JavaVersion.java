@@ -129,6 +129,6 @@ public class JavaVersion {
 	public boolean isGreaterOrEqualsThan(JavaVersion version) { return isGreaterOrEquals( version, this ); }
 	
 	public boolean isSmallerOrEquals(JavaVersion version) { return isSmallerOrEquals( this, version ); }
-	public boolean isGSmallerOrEqualsThan(JavaVersion version) { return isSmallerOrEquals( version, this ); }
+	public boolean isSmallerOrEqualsThan(JavaVersion version) { return isSmallerOrEquals( version, this ); }
 	
 }
