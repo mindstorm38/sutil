@@ -82,4 +82,10 @@ public class MathHelper {
 		return ( ( current - last ) * alpha ) + last;
 	}
     
+    public static double round_off(double n, int decimals) {
+    	if ( decimals < 0 ) throw new IndexOutOfBoundsException("Invalid decimal count");
+    	final double p = Math.pow( 10, decimals );
+    	return Math.round( n * p ) / p;
+    }
+    
 }
