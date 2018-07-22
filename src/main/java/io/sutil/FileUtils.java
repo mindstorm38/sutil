@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 public class FileUtils {
-
+	
 	public static File getAppDataDirectory() {
 		
 		String path = null;
@@ -79,6 +79,16 @@ public class FileUtils {
 	
 	public static String getFileName(String path) {
 		return Paths.get( path ).getFileName().toString();
+	}
+	
+	public static String getFileExtension(String path) {
+		int l = path.lastIndexOf('.');
+		if ( l == -1 || l == path.length() - 1 ) return null;
+		return path.substring( l + 1 );
+	}
+	
+	public static String getFileExtension(File file) {
+		return getFileExtension( file.getAbsolutePath() );
 	}
 	
 }
