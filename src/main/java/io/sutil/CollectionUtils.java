@@ -17,6 +17,11 @@ public class CollectionUtils {
 		return -1;
 	}
 	
+	public static <E> int arrayLastIndexOf(E[] arr, E elt) {
+		for ( int i = arr.length - 1; i >= 0; i-- ) if ( arr[ i ] == elt ) return i;
+		return -1;
+	}
+	
 	public static <E> boolean arrayContains(E[] array, E elt) {
 		for ( E e : array )
 			if ( e.equals( elt ) )
