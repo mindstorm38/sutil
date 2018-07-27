@@ -13,12 +13,12 @@ public class CollectionUtils {
 	// ARRAY
 	
 	public static <E> int arrayIndexOf(E[] arr, E elt) {
-		for ( int i = 0; i < arr.length; i++ ) if ( arr[ i ] == elt ) return i;
+		for ( int i = 0; i < arr.length; i++ ) if ( elt.equals( arr[ i ] ) ) return i;
 		return -1;
 	}
 	
 	public static <E> int arrayLastIndexOf(E[] arr, E elt) {
-		for ( int i = arr.length - 1; i >= 0; i-- ) if ( arr[ i ] == elt ) return i;
+		for ( int i = arr.length - 1; i >= 0; i-- ) if ( elt.equals( arr[ i ] ) ) return i;
 		return -1;
 	}
 	
