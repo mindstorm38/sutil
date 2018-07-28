@@ -10,13 +10,15 @@ package io.sutil;
  */
 public abstract class LazyLoadValue<T> {
 	
-	protected T value;
-	protected boolean loaded;
+	private T value;
+	private boolean loaded;
+	protected RuntimeException exception;
 	
 	public LazyLoadValue() {
 		
 		this.value = null;
 		this.loaded = false;
+		this.exception = null;
 		
 	}
 	
@@ -28,6 +30,9 @@ public abstract class LazyLoadValue<T> {
 			this.loaded = true;
 		}
 		
+		if ( this.exception != null )
+			throw this.exception;
+		
 		return this.value;
 		
 	}
@@ -37,6 +42,7 @@ public abstract class LazyLoadValue<T> {
 	public void reset() {
 		
 		this.loaded = false;
+		this.exception = null;
 		
 	}
 	
