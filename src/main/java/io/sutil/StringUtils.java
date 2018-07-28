@@ -47,9 +47,7 @@ public class StringUtils {
 	}
 	
 	public static String getStackTraceString(StackTraceElement[] elts) {
-		Throwable t = new Throwable();
-		t.setStackTrace( elts );
-		return getStackTraceString( t );
+		return getStackTraceString( new StackTraceThrowable( elts ) );
 	}
 	
 	public static String getStackTraceString(Throwable t) {
