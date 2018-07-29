@@ -50,7 +50,7 @@ public class FileUtils {
 	 * @return Array of stored bytes in the file
 	 * @throws IOException If the file is too large or if delegate function {@link StreamUtils#getStreamByteArray(InputStream)} throws an exception
 	 */
-	public static byte[] getBytesFromFile(File file) throws IOException {
+	public static byte[] getFileByteArray(File file) throws IOException {
 		if ( file.length() > CollectionUtils.ARRAY_MAX_LENGTH ) throw new IOException();
 		return StreamUtils.getStreamByteArray( new FileInputStream( file ) );
 	}
