@@ -13,7 +13,8 @@ public class StreamUtils {
 	}
 	
 	/**
-	 * Read all bytes from an InputStream and return it in a byte array
+	 * Read all bytes from an InputStream and return it in a byte array<br>
+	 * This function close the stream at the end of reading if no exception throws
 	 * @param stream {@link InputStream} where to read bytes
 	 * @return The bytes array retrieved from stream
 	 * @throws IOException See {@link InputStream#read(byte[])}
@@ -29,12 +30,15 @@ public class StreamUtils {
 			bytes.write( buf, 0, read );
 		}
 		
+		safeclose( stream );
+		
 		return bytes.toByteArray();
 		
 	}
 	
 	/**
-	 * Same as {@link #getStreamByteArray(InputStream)} but return null instead of throwing {@link IOException}
+	 * Same as {@link #getStreamByteArray(InputStream)} but return null instead of throwing {@link IOException}<br>
+	 * This function close the stream at the end of reading if no exception throws
 	 * @param stream {@link InputStream} where to read bytes
 	 * @return The bytes array retrieved from stream
 	 * @see #getStreamByteArray(InputStream)
