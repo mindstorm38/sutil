@@ -12,6 +12,8 @@ public class CollectionUtils {
 	
 	// ARRAY
 	
+	public static final int ARRAY_MAX_LENGTH = Integer.MAX_VALUE;
+	
 	public static <E> int arrayIndexOf(E[] arr, E elt) {
 		for ( int i = 0; i < arr.length; i++ ) if ( elt.equals( arr[ i ] ) ) return i;
 		return -1;

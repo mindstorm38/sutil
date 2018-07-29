@@ -43,34 +43,16 @@ public class FileUtils {
 	public static void writeStringToFile(File file, String string, Charset charset) throws IOException {
 		writeBytesToFile( file, string.getBytes( charset ) );
 	}
-
+	
+	/**
+	 * Return the array of stored bytes in the file, not work on very large file (see {@link CollectionUtils#ARRAY_MAX_LENGTH}
+	 * @param file File where to read bytes
+	 * @return Array of stored bytes in the file
+	 * @throws IOException If the file is too large or if delegate function {@link StreamUtils#getStreamByteArray(InputStream)} throws an exception
+	 */
 	public static byte[] getBytesFromFile(File file) throws IOException {
-		
-		InputStream is = new FileInputStream(file);
-	
-		long length = file.length();
-	
-		if (length > Integer.MAX_VALUE) {
-			is.close();
-			throw new IOException("File too large > " + Integer.MAX_VALUE);
-		}
-	
-		byte[] bytes = new byte[(int) length];
-	
-		int offset = 0;
-		int numRead = 0;
-		while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-			offset += numRead;
-		}
-	
-		if (offset < bytes.length) {
-			is.close();
-			throw new IOException("Could not completely read file " + file.getName());
-		}
-	
-		is.close();
-		return bytes;
-		
+		if ( file.length() > CollectionUtils.ARRAY_MAX_LENGTH ) throw new IOException();
+		return StreamUtils.getStreamByteArray( new FileInputStream( file ) );
 	}
 	
 	public static String getFileName(File file) {
