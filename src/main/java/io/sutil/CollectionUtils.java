@@ -45,6 +45,17 @@ public class CollectionUtils {
 		return array;
 	}
 	
+	public static String[] arrayStringConditional(String[] strings, boolean[] condition) {
+		String[] array = new String[ CommonUtils.booleanIntegerTotal( condition ) ];
+		for ( int i = 0, j = 0; i < condition.length; i++ ) {
+			if ( condition[ i ] ) {
+				array[ j ] = strings[ i ];
+				j++;
+			}
+		}
+		return array;
+	}
+	
 	// LIST
 	
 	@SafeVarargs
