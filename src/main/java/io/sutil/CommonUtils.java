@@ -6,6 +6,10 @@ public class CommonUtils {
 		return o == Boolean.FALSE || o == Boolean.TRUE;
 	}
 	
+	public static int integerBoolean(boolean b) {
+		return b ? 1 : 0;
+	}
+	
 	public static double getTime() {
 		return System.nanoTime() / 1000000000.0;
 	}
