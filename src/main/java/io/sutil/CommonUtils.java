@@ -6,11 +6,11 @@ public class CommonUtils {
 		return o == Boolean.FALSE || o == Boolean.TRUE;
 	}
 	
-	public static int integerBoolean(boolean b) {
+	public static int booleanInteger(boolean b) {
 		return b ? 1 : 0;
 	}
 	
-	public static int integerBooleans(boolean...bs) {
+	public static int booleanIntegerTotal(boolean...bs) {
 		int i = 0;
 		for ( boolean b : bs )
 			if ( b )
