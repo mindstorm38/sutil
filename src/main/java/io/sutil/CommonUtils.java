@@ -10,6 +10,14 @@ public class CommonUtils {
 		return b ? 1 : 0;
 	}
 	
+	public static int integerBooleans(boolean...bs) {
+		int i = 0;
+		for ( boolean b : bs )
+			if ( b )
+				i++;
+		return i;
+	}
+	
 	public static double getTime() {
 		return System.nanoTime() / 1000000000.0;
 	}
