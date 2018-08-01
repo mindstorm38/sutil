@@ -31,6 +31,20 @@ public class CollectionUtils {
 		return false;
 	}
 	
+	public static String[] arrayStringConcat(String[] arr1, String...arr2) {
+		String[] array = new String[ arr1.length + arr2.length ];
+		System.arraycopy( arr1, 0, array, 0, arr1.length );
+		System.arraycopy( arr2, arr1.length, array, 0, arr2.length );
+		return array;
+	}
+	
+	public static String[] arrayStringConcat(String[] arr, String str) {
+		String[] array = new String[ arr.length + 1 ];
+		System.arraycopy( arr, 0, array, 0, arr.length );
+		array[ arr.length ] = str;
+		return array;
+	}
+	
 	// LIST
 	
 	@SafeVarargs
