@@ -3,7 +3,7 @@ package io.sutil;
 public class CommonUtils {
 
 	public static boolean isBoolean(Object o) {
-		return o == Boolean.FALSE || o == Boolean.TRUE;
+		return o instanceof Boolean;
 	}
 	
 	public static int booleanInteger(boolean b) {

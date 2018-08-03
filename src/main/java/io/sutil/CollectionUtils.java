@@ -4,9 +4,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CollectionUtils {
 	
@@ -120,6 +122,15 @@ public class CollectionUtils {
 			return null;
 		}
 		
+	}
+	
+	// SET
+	
+	@SafeVarargs
+	public static <E> Set<E> createSetInline(E...elts) {
+		Set<E> s = new HashSet<>();
+		for ( E elt : elts ) s.add( elt );
+		return s;
 	}
 	
 	// MAP
