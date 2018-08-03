@@ -28,7 +28,7 @@ public class CollectionUtils {
 	
 	public static <E> boolean arrayContains(E[] array, E elt) {
 		for ( E e : array )
-			if ( e.equals( elt ) )
+			if ( elt.equals( e ) )
 				return true;
 		return false;
 	}
@@ -56,6 +56,13 @@ public class CollectionUtils {
 			}
 		}
 		return array;
+	}
+	
+	public static <E> boolean arrayHasDuplicate(E[] arr) {
+		for ( int i = 0; i < arr.length; i++ )
+			if ( arrayLastIndexOf( arr, arr[ i ] ) != i )
+				return true;
+		return false;
 	}
 	
 	// LIST
