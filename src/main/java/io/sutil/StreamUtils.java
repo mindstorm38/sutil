@@ -12,6 +12,11 @@ public class StreamUtils {
 		try { closeable.close(); } catch (IOException e) {}
 	}
 	
+	public static void safeclose(AutoCloseable closeable) {
+		if ( closeable == null ) return;
+		try { closeable.close(); } catch (Exception e) {}
+	}
+	
 	/**
 	 * Read all bytes from an InputStream and return it in a byte array<br>
 	 * This function close the stream at the end of reading if no exception throws
