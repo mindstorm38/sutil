@@ -7,6 +7,11 @@ import io.sutil.StringUtils;
 
 public abstract class BaseBuffer {
 	
+	// Constants \\
+	
+	private static final byte BYTE_ZERO	= 0;
+	private static final byte BYTE_ONE	= 1;
+	
 	// Class \\
 	
 	protected byte[] bytes;
@@ -318,11 +323,11 @@ public abstract class BaseBuffer {
 	// - Other
 	
 	public BaseBuffer writeBoolean(boolean bool) {
-		return this.writeByte( (byte) ( bool ? 0x1 : 0x0 ) );
+		return this.writeByte( bool ? BYTE_ONE : BYTE_ZERO );
 	}
 	
 	public BaseBuffer writeBooleanOffset(boolean bool, int offset) {
-		return this.writeByteOffset( (byte) ( bool ? 0x1 : 0x0 ), offset );
+		return this.writeByteOffset( bool ? BYTE_ONE : BYTE_ZERO, offset );
 	}
 	
 	public BaseBuffer writeBuffer(BaseBuffer buffer, int count) {
@@ -341,15 +346,15 @@ public abstract class BaseBuffer {
 		return this.writeBytesOffset( string.getBytes( this.charset ), offset );
 	}
 	
-	public BaseBuffer writeStringZeroTerminated(String string) {
+	public BaseBuffer writeStringNullTerminated(String string) {
 		this.writeBytes( string.getBytes( this.charset ) );
-		return this.writeByte( (byte) 0 );
+		return this.writeByte( BYTE_ZERO );
 	}
 	
-	public BaseBuffer writeStringZeroTerminatedOffset(String string, int offset) {
+	public BaseBuffer writeStringNullTerminatedOffset(String string, int offset) {
 		byte[] bytes = string.getBytes( this.charset );
 		this.writeBytesOffset( bytes, offset );
-		return this.writeByteOffset( (byte) 0, offset + bytes.length );
+		return this.writeByteOffset( BYTE_ZERO, offset + bytes.length );
 	}
 	
 	public BaseBuffer writeStringIndexed(String string) {
@@ -393,6 +398,17 @@ public abstract class BaseBuffer {
 	private void increaseReadIndex(int count) {
 		this.readIndex += count;
 		this.checkIndex( this.readIndex );
+	}
+	
+	public int getByteOffset(int startOff, byte b) {
+		for ( int i = startOff; i < this.bytes.length; i++ )
+			if ( this.bytes[ b ] == b )
+				return i;
+		return -1;
+	}
+	
+	public int getNextByteOffset(byte b) {
+		return this.getByteOffset( this.readIndex, b );
 	}
 	
 	// - Bytes array
@@ -537,6 +553,16 @@ public abstract class BaseBuffer {
 	public String readStringOffset(int offset, int length) {
 		byte[] bytes = this.readBytesOffset( offset, length );
 		return new String( bytes, this.charset );
+	}
+	
+	public String readStringNullTerminated() {
+		int zeroByteOff = this.getNextByteOffset( BYTE_ZERO );
+		return this.readString( zeroByteOff - this.readIndex ); // TODO Check that
+	}
+	
+	public String readStringNullTerminatedOffset(int offset) {
+		int zeroByteOff = this.getByteOffset( offset, BYTE_ZERO );
+		return this.readString( zeroByteOff - offset );
 	}
 	
 	public String readStringIndexed() {
