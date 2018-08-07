@@ -334,13 +334,22 @@ public abstract class BaseBuffer {
 	}
 	
 	public BaseBuffer writeString(String string) {
-		byte[] bytes = string.getBytes( this.charset );
-		return this.writeBytes( bytes );
+		return this.writeBytes( string.getBytes( this.charset ) );
 	}
 	
 	public BaseBuffer writeStringOffset(String string, int offset) {
+		return this.writeBytesOffset( string.getBytes( this.charset ), offset );
+	}
+	
+	public BaseBuffer writeStringZeroTerminated(String string) {
+		this.writeBytes( string.getBytes( this.charset ) );
+		return this.writeByte( (byte) 0 );
+	}
+	
+	public BaseBuffer writeStringZeroTerminatedOffset(String string, int offset) {
 		byte[] bytes = string.getBytes( this.charset );
-		return this.writeBytesOffset( bytes, offset );
+		this.writeBytesOffset( bytes, offset );
+		return this.writeByteOffset( (byte) 0, offset + bytes.length );
 	}
 	
 	public BaseBuffer writeStringIndexed(String string) {
@@ -353,6 +362,16 @@ public abstract class BaseBuffer {
 		byte[] bytes = string.getBytes( this.charset );
 		this.writeIntegerOffset( bytes.length, offset );
 		return this.writeBytesOffset( bytes, offset + Integer.BYTES );
+	}
+	
+	public BaseBuffer writeStringZeroFilled(String string, int length) {
+		byte[] bytes = StringUtils.getStringBytesZeroFilled( string, this.charset, length );
+		return this.writeBytes( bytes );
+	}
+	
+	public BaseBuffer writeStringZeroFilled(String string, int offset, int length) {
+		byte[] bytes = StringUtils.getStringBytesZeroFilled( string, this.charset, length );
+		return this.writeBytesOffset( bytes, offset );
 	}
 	
 	// READ \\

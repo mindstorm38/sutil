@@ -56,4 +56,16 @@ public class StringUtils {
 		return writer.toString();
 	}
 	
+	public static byte[] getStringBytesZeroFilled(String str, Charset charset, int length) {
+		byte[] strbytes = str.getBytes( charset );
+		if ( strbytes.length > length ) throw new IllegalArgumentException( "Invalid string bytes length, must be less or equals to length (" + length + ")" );
+		byte[] bytes = new byte[ length ];
+		System.arraycopy( strbytes, 0, bytes, 0, strbytes.length );
+		return bytes;
+	}
+	
+	public static byte[] getStringBytesZeroFilled(String str, int length) {
+		return getStringBytesZeroFilled( str, Charset.defaultCharset(), length );
+	}
+	
 }
