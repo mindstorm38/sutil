@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
 import io.sutil.LazyLoadValue;
+import io.sutil.TextBuilder;
 
 /**
  * 
@@ -293,6 +294,21 @@ public class Registry<K, V> implements Iterable<Entry<K, V>>, RandomAccess {
 	@Override
 	public Iterator<Entry<K, V>> iterator() {
 		return new EntryIterator();
+	}
+	
+	@Override
+	public String toString() {
+		
+		TextBuilder b = new TextBuilder();
+		
+		for ( RegistryEntry<K, V> entry : this.entries ) {
+			
+			b.append( entry.key.toString() ).append(" = ").append( entry.value.toString() ).nl();
+			
+		}
+		
+		return b.toString();
+		
 	}
 	
 	private static class RegistryEntry<K, V> implements Entry<K, V> {
