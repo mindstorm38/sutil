@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class CollectionUtils {
 	
@@ -129,6 +130,14 @@ public class CollectionUtils {
 			return null;
 		}
 		
+	}
+	
+	public static <E> List<E> listFilter(List<E> origin, Predicate<E> tester) {
+		List<E> sub = new ArrayList<>();
+		for ( E elt : origin )
+			if ( tester.test( elt ) )
+				sub.add( elt );
+		return sub;
 	}
 	
 	// SET
