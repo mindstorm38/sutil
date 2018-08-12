@@ -39,6 +39,34 @@ public class Version {
 			return null;
 		}
 		
+		public static Type getByIdentifier(String identifier) {
+			for ( Type type : Type.values() )
+				if ( identifier.equals( type.identifier ) )
+					return type;
+			return null;
+		}
+		
+		public static Type getByName(String name) {
+			for ( Type type : Type.values() )
+				if ( name.equalsIgnoreCase( type.name ) )
+					return type;
+			return null;
+		}
+		
+	}
+	
+	public static class InvalidVersionFormatException extends RuntimeException {
+		
+		private static final long serialVersionUID = 197561322585928402L;
+
+		public InvalidVersionFormatException(String msg) {
+			super( "Invalid version format : " + msg );
+		}
+		
+		public InvalidVersionFormatException() {
+			super( "Invalid version format" );
+		}
+		
 	}
 	
 	private final Type type;
@@ -125,6 +153,70 @@ public class Version {
 		byte major = (byte) ( ( uid & 0x00FF0000 ) >> ( Byte.SIZE * 2 ) );
 		byte minor = (byte) ( ( uid & 0x0000FF00 ) >> ( Byte.SIZE * 1 ) );
 		byte build = (byte) ( ( uid & 0x000000FF ) >> ( Byte.SIZE * 0 ) );
+		
+		return new Version( type, major, minor, build );
+		
+	}
+	
+	public static Version parse(String repr) {
+		
+		String[] parts = repr.split("\\.");
+		
+		Type type = null;
+		byte major = (byte) 0;
+		byte minor = (byte) 0;
+		byte build = (byte) 0;
+		
+		String part0 = parts[ 0 ];
+		
+		for ( Type typeRaw : Type.values() ) {
+			if ( part0.startsWith( typeRaw.name ) ) {
+				type = typeRaw;
+				if ( part0.length() == typeRaw.name.length() ) throw new InvalidVersionFormatException("No major version number specified with version type name");
+				part0 = part0.substring( typeRaw.name.length() + 1 );
+				break;
+			}
+		}
+		
+		if ( type == null ) {
+			
+			for ( Type typeRaw : Type.values() ) {
+				if ( part0.startsWith( typeRaw.identifier ) ) {
+					type = typeRaw;
+					if ( part0.length() == 1 ) throw new InvalidVersionFormatException("No major version number specified with version type identifier");
+					break;
+				}
+			}
+			
+			if ( type == null ) type = Type.ALPHA;
+			
+		}
+		
+		try {
+			major = Byte.valueOf( part0.trim() );
+		} catch (NumberFormatException e) {
+			throw new InvalidVersionFormatException("Invalid major version format");
+		}
+		
+		if ( parts.length >= 2 ) {
+			
+			try {
+				minor = Byte.valueOf( parts[1].trim() );
+			} catch (NumberFormatException e) {
+				throw new InvalidVersionFormatException("Invalid minor version format");
+			}
+			
+			if ( parts.length >= 3 ) {
+				
+				try {
+					build = Byte.valueOf( parts[2].trim() );
+				} catch (NumberFormatException e) {
+					throw new InvalidVersionFormatException("Invalid build version format");
+				}
+				
+			}
+			
+		}
 		
 		return new Version( type, major, minor, build );
 		
