@@ -32,6 +32,10 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 		
 	}
 	
+	public ResourceAccessorWrapper() {
+		this( null );
+	}
+	
 	@Override
 	public boolean resourceExists(String path) {
 		return this.accessor.resourceExists( path );
