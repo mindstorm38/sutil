@@ -10,11 +10,11 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 
 	protected final ResourceAccessor accessor;
 	
-	public ResourceAccessorWrapper(String baseFolderPath) {
+	public ResourceAccessorWrapper(Class<?> clazz, String baseFolderPath) {
 		
 		try {
 			
-			File src = new File( ResourceAccessorWrapper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() );
+			File src = new File( clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() );
 			
 			if ( src.isDirectory() ) {
 				
@@ -32,8 +32,8 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 		
 	}
 	
-	public ResourceAccessorWrapper() {
-		this( null );
+	public ResourceAccessorWrapper(Class<?> owner) {
+		this( owner, null );
 	}
 	
 	@Override
