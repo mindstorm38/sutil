@@ -184,6 +184,7 @@ public class Version {
 				if ( part0.startsWith( typeRaw.identifier ) ) {
 					type = typeRaw;
 					if ( part0.length() == 1 ) throw new InvalidVersionFormatException("No major version number specified with version type identifier");
+					part0 = part0.substring( 1 );
 					break;
 				}
 			}
@@ -192,8 +193,10 @@ public class Version {
 			
 		}
 		
+		part0 = part0.trim();
+		
 		try {
-			major = Byte.valueOf( part0.trim() );
+			major = Byte.valueOf( part0 );
 		} catch (NumberFormatException e) {
 			throw new InvalidVersionFormatException("Invalid major version format");
 		}
