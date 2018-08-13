@@ -2,20 +2,76 @@
 
 	-- SUtil --
 
+	Using Gradle 4.9
+
 */
 
-apply plugin: 'java-library'
-apply plugin: 'eclipse'
+plugins {
+	id 'java-library'
+	id 'eclipse'
+	id 'maven-publish'
+}
 
-version = "1.0.9"
+group = 'fr.mindstorm38'
+description = 'SUtil (Simple Utility library)'
+version = '1.0.9'
 
 compileJava.options.encoding = "UTF-8"
 
 repositories {
-    jcenter()
-    mavenCentral()
+	jcenter()
+	mavenCentral()
 }
 
 dependencies {
 }
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+/*
+publishing {
+
+	publications {
+		
+		sutil(MavenPublication) {
+			
+			from components.java
+			artifact sourcesJar
+			
+			pom {
+				name = "${name}"
+				description = "${description}"
+				url = "https://github.com/mindstorm38/sutil"
+				licenses {}
+				developers {
+					developer {
+						id = "mindstorm38"
+						name = "Mindstorm38"
+						email = "mindstorm38pro@gmail.com"
+					}
+				}
+				scm {
+					connection = "scm:git:git://github.com/mindstorm38/sutil.git"
+					developerConnection = "scm:git:git@github.com:mindstorm38/sutil.git"
+					url = "https://github.com/mindstorm38/sutil"
+				}
+			}
+
+		}
+
+	}
+	
+	repositories {
+		
+		maven {
+			name = 'myRepo'
+			url = "file://${buildDir}/repo"
+		}
+
+	}
+
+}
+*/
