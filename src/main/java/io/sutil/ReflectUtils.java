@@ -2,6 +2,7 @@ package io.sutil;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -37,9 +38,9 @@ public class ReflectUtils {
 	
 	/**
 	 * Dynamically add a jar to the Java ClassLoader <code>classpath</code>
-	 * @param jar
-	 * @param loader
-	 * @throws Exception
+	 * @param jar Jar file
+	 * @param loader The used {@link ClassLoader}
+	 * @throws Exception Throws from {@link URI#toURL()}, {@link Class#getDeclaredMethod(String, Class...)}, {@link Method#setAccessible(boolean)} and {@link Method#invoke(Object, Object...)}
 	 */
 	public static void addJarToClasspath(File jar, ClassLoader loader) throws Exception {
 		
