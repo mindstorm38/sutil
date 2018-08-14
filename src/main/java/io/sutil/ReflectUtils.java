@@ -1,5 +1,9 @@
 package io.sutil;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+
 /**
  * 
  * Utilities for the Java Runtime Reflection
@@ -29,6 +33,21 @@ public class ReflectUtils {
 	public static <E> E safecast(Object object, Class<E> clazz) {
 		if ( !clazz.isAssignableFrom( object.getClass() ) ) return null;
 		return clazz.cast( object );
+	}
+	
+	/**
+	 * Dynamically add a jar to the Java ClassLoader <code>classpath</code>
+	 * @param jar
+	 * @param loader
+	 * @throws Exception
+	 */
+	public static void addJarToClasspath(File jar, ClassLoader loader) throws Exception {
+		
+		Class<?> clazz = loader.getClass();
+		Method method = clazz.getSuperclass().getDeclaredMethod( "addURL", new Class[] { URL.class } );
+		method.setAccessible( true );
+		method.invoke( loader, new Object[] { jar.toURI().toURL() } );
+		
 	}
 	
 }
