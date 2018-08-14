@@ -7,11 +7,19 @@ import java.io.InputStream;
 
 public class StreamUtils {
 
+	/**
+	 * Safe close a stream, or return <code>null</code> if {@link Closeable#close()} throws an exception
+	 * @param closeable Closeable
+	 */
 	public static void safeclose(Closeable closeable) {
 		if ( closeable == null ) return;
 		try { closeable.close(); } catch (IOException e) {}
 	}
 	
+	/**
+	 * Same as {@link #safeclose(Closeable)} but for {@link AutoCloseable}
+	 * @param closeable Closeable
+	 */
 	public static void safeclose(AutoCloseable closeable) {
 		if ( closeable == null ) return;
 		try { closeable.close(); } catch (Exception e) {}
