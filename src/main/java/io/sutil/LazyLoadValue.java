@@ -46,4 +46,8 @@ public abstract class LazyLoadValue<T> {
 		
 	}
 	
+	public boolean loaded() {
+		return this.loaded;
+	}
+	
 }
