@@ -18,7 +18,7 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 			
 			if ( src.isDirectory() ) {
 				
-				this.accessor = new FolderResourceAccessor( src, baseFolderPath );
+				this.accessor = new DirectoryResourceAccessor( src, baseFolderPath );
 				
 			} else {
 				

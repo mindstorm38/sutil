@@ -23,7 +23,7 @@ public abstract class Entry {
 	public Entry(ResourceAccessor accessor, String path) {
 		
 		this.accessor = accessor;
-		this.path = path;
+		this.path = path.contains("\\") ? path.replace('\\', '/') : path;
 		
 		this.name = new LazyLoadValue<String>() {
 			

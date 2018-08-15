@@ -10,13 +10,13 @@ public class Resource extends Entry implements AutoCloseable {
 	/**
 	 * The resource input stream
 	 */
-	protected final LazyLoadValue<InputStream> stream;
+	protected final LazyLoadValue<InputStream> inputStream;
 	
 	public Resource(ResourceAccessor accessor, String path) {
 		
 		super( accessor, path );
 		
-		this.stream = new LazyLoadValue<InputStream>() {
+		this.inputStream = new LazyLoadValue<InputStream>() {
 			
 			public InputStream create() {
 				return Resource.this.accessor.resourceInputStream( Resource.this.path );
@@ -27,14 +27,14 @@ public class Resource extends Entry implements AutoCloseable {
 	}
 	
 	public InputStream getInputStream() {
-		return this.stream.get();
+		return this.inputStream.get();
 	}
 
 	@Override
 	public void close() throws Exception {
 		
-		if ( this.stream.loaded() )
-			StreamUtils.safeclose( this.stream.get() );
+		if ( this.inputStream.loaded() )
+			StreamUtils.safeclose( this.inputStream.get() );
 		
 	}
 

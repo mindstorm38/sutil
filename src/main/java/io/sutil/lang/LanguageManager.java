@@ -94,7 +94,7 @@ public class LanguageManager {
 	private void parseLanguage(/*String path*/Resource resource) {
 		
 		try {
-			
+			System.out.println(resource.getInputStream());
 			BufferedReader reader = new BufferedReader( new InputStreamReader( /*this.resourceAccessor.resourceInputStream( path )*/resource.getInputStream(), this.charset ) );
 			
 			String name = null;

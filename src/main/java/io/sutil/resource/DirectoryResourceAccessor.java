@@ -9,27 +9,27 @@ import java.util.List;
 
 import io.sutil.FileUtils;
 
-public class FolderResourceAccessor extends ResourceAccessor {
+public class DirectoryResourceAccessor extends ResourceAccessor {
 
-	private final File folder;
+	private final File directory;
 	
-	public FolderResourceAccessor(File folder, String baseFolderPath) {
+	public DirectoryResourceAccessor(File folder, String baseFolderPath) {
 		
 		super( baseFolderPath );
 		
 		if ( folder == null || !folder.isDirectory() ) throw new IllegalArgumentException("Invalid folder File instance");
 		
-		this.folder = folder;
+		this.directory = folder;
 		
 	}
 	
-	public FolderResourceAccessor(File folder) {
+	public DirectoryResourceAccessor(File folder) {
 		this( folder, "" );
 	}
 	
 	private File getFile(String path) {
-		File file = new File( this.folder, this.getFullPath( path ) );
-		if ( FileUtils.getFileHierarchyLevel( file ) < FileUtils.getFileHierarchyLevel( this.folder ) ) return null;
+		File file = new File( this.directory, this.getFullPath( path ) );
+		if ( FileUtils.getFileHierarchyLevel( file ) < FileUtils.getFileHierarchyLevel( this.directory ) ) return null;
 		return FileUtils.simplifyFilePath( file );
 	}
 	
@@ -53,7 +53,7 @@ public class FolderResourceAccessor extends ResourceAccessor {
 
 	@Override
 	public InputStream resourceInputStream(String path) {
-		
+		System.out.println( path );
 		File file = this.getFile( path );
 		if ( !file.isFile() ) return null;
 		
@@ -75,19 +75,21 @@ public class FolderResourceAccessor extends ResourceAccessor {
 	@Override
 	public List<Entry> listEntries(String path) {
 		
+		path = BaseDirectory.formatDirectoryPath( path );
+		
 		List<Entry> entries = new ArrayList<>();
 		
 		File directory = this.getFile( path );
 		if ( directory == null || !directory.isDirectory() ) return null;
 		
-		int dirPathLength = this.folder.getAbsolutePath().length() + 1;
+		int dirPathLength = this.directory.getAbsolutePath().length() + this.baseDirectoryPath.length() + 1;
 		
 		directory.listFiles( f -> {
 			
 			if ( f.isDirectory() )
-				entries.add( new Directory( FolderResourceAccessor.this, f.getAbsolutePath().substring( dirPathLength ) ) );
+				entries.add( new Directory( DirectoryResourceAccessor.this, f.getAbsolutePath().substring( dirPathLength ) ) );
 			else if ( f.isFile() )
-				entries.add( new Resource( FolderResourceAccessor.this, f.getAbsolutePath().substring( dirPathLength ) ) );
+				entries.add( new Resource( DirectoryResourceAccessor.this, f.getAbsolutePath().substring( dirPathLength ) ) );
 			
 			return false;
 			
@@ -99,7 +101,7 @@ public class FolderResourceAccessor extends ResourceAccessor {
 	
 	@Override
 	public String toString() {
-		return "Directory Resource Accessor at '" + this.folder.getAbsolutePath() + "' & base directory '" + this.baseDirectoryPath + "'";
+		return "Directory Resource Accessor at '" + this.directory.getAbsolutePath() + "' & base directory '" + this.baseDirectoryPath + "'";
 	}
 	
 	/*
