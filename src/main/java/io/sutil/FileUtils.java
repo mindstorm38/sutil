@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtils {
 	
@@ -109,6 +112,93 @@ public class FileUtils {
 	 */
 	public static String getFileExtension(File file) {
 		return getFileExtension( file.getAbsolutePath() );
+	}
+	
+	/**
+	 * Simplify a path by resolving relative names
+	 * @param path Path to simplify
+	 * @return Simplified string path
+	 */
+	public static String simplifyPath(Path path) {
+		
+		List<String> newNames = new ArrayList<>();
+		Path n;
+		
+		try {
+			
+			for ( int i = 0; i < path.getNameCount(); i++ ) {
+				n = path.getName( i );
+				if ( n.toString().equals("..") )
+					newNames.remove( newNames.size() - 1 );
+				else
+					newNames.add( n.toString() );
+			}
+			
+		} catch (IndexOutOfBoundsException e) {
+			throw new IllegalArgumentException("Invalid path, can't be simplified");
+		}
+		
+		return path.getRoot().toString() + String.join( File.separator, newNames );
+		
+	}
+	
+	/**
+	 * Simplify a string path
+	 * @param path Path to simplify
+	 * @return Simplified string path
+	 */
+	public static String simplifyPath(String path) {
+		return simplifyPath( Paths.get( path ) );
+	}
+	
+	/**
+	 * Simplify a path and return a {@link Path} object
+	 * @param path The {@link Path} object to simplify
+	 * @return The simplified {@link Path}
+	 */
+	public static Path simplifyPathPath(Path path) {
+		return Paths.get( simplifyPath( path ) );
+	}
+	
+	/**
+	 * Simplify a {@link File} path
+	 * @param file The {@link File} to simplify
+	 * @return Simplified {@link File}
+	 */
+	public static File simplifyFilePath(File file) {
+		return new File( simplifyPath( file.toPath() ) );
+	}
+	
+	/**
+	 * Get a path hierarchy level
+	 * @param path The path
+	 * @return The path hierarchy level
+	 */
+	public static int getPathHierarchyLevel(Path path) {
+		int lvl = 0;
+		for ( int i = 0; i < path.getNameCount(); i++ )
+			if ( path.getName( i ).toString().equals("..") )
+				lvl--;
+			else lvl++;
+		return lvl;
+	}
+	
+	/**
+	 * Get a path hierarchy level
+	 * @param path The path
+	 * @return The path hierarchy level
+	 */
+	public static int getPathHierarchyLevel(String path) {
+		return getPathHierarchyLevel( Paths.get( path ) );
+	}
+	
+	/**
+	 * Get a file hierarchy level
+	 * @param file The file
+	 * @return The file hierarchy level
+	 */
+	public static int getFileHierarchyLevel(File file) {
+		return getPathHierarchyLevel( file.toPath() );
 	}
 	
 }

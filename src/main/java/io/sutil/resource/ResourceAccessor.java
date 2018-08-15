@@ -1,15 +1,26 @@
 package io.sutil.resource;
 
-import java.io.InputStream;
 import java.util.List;
 
-public abstract class ResourceAccessor {
+import io.sutil.LazyLoadValue;
+
+public abstract class ResourceAccessor implements BaseDirectory {
 	
-	protected final String baseFolderPath;
+	protected final String baseDirectoryPath;
+	protected final LazyLoadValue<Directory> baseDirectory;
 	
-	public ResourceAccessor(String baseFolderPath) {
+	public ResourceAccessor(String baseDirectoryPath) {
 		
-		this.baseFolderPath = baseFolderPath == null || baseFolderPath.isEmpty() ? "" : baseFolderPath + ( baseFolderPath.endsWith("/") ? "" : "/" );
+		// this.baseFolderPath = baseFolderPath == null || baseFolderPath.isEmpty() ? "" : baseFolderPath + ( baseFolderPath.endsWith("/") ? "" : "/" );
+		this.baseDirectoryPath = baseDirectoryPath == null ? "" : BaseDirectory.formatDirectoryPath( baseDirectoryPath );
+		
+		this.baseDirectory = new LazyLoadValue<Directory>() {
+			
+			public Directory create() {
+				return new Directory( ResourceAccessor.this, "" );
+			}
+			
+		};
 		
 	}
 	
@@ -17,12 +28,26 @@ public abstract class ResourceAccessor {
 		this( null );
 	}
 	
+	public Directory getBaseDirectory() {
+		return this.baseDirectory.get();
+	}
+	
+	@Override
+	public String getFullPath(String path) {
+		return BaseDirectory.join( this.baseDirectoryPath, path );
+	}
+	
+	/*
 	public String getFullPath(String path) {
 		return this.baseFolderPath + path;
 	}
+	*/
 	
+	/*
 	public abstract boolean resourceExists(String path);
-	public abstract InputStream resourceInputStream(String path);
-	public abstract List<String> listResourcePaths(String basePath);
+	public abstract InputStream resourceInputStream(String path);*/
+	@Deprecated public List<String> listResourcePaths(String basePath) {
+		return null;
+	}
 	
 }

@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.sutil.StringUtils;
+import io.sutil.resource.Resource;
 import io.sutil.resource.ResourceAccessor;
 
 import static io.sutil.LoggerUtils.*;
@@ -73,6 +74,10 @@ public class LanguageManager {
 		
 		this.availableLanguages.clear();
 		
+		for ( String langFolderPath : this.langsFolderPaths )
+			this.resourceAccessor.listResources( langFolderPath ).forEach( this::parseLanguage );
+		
+		/*
 		for ( String langFolderPath : this.langsFolderPaths ) {
 			
 			for ( String langResPath : this.resourceAccessor.listResourcePaths( langFolderPath ) ) {
@@ -82,14 +87,15 @@ public class LanguageManager {
 			}
 			
 		}
+		*/
 		
 	}
 	
-	private void parseLanguage(String path) {
+	private void parseLanguage(/*String path*/Resource resource) {
 		
 		try {
 			
-			BufferedReader reader = new BufferedReader( new InputStreamReader( this.resourceAccessor.resourceInputStream( path ), this.charset ) );
+			BufferedReader reader = new BufferedReader( new InputStreamReader( /*this.resourceAccessor.resourceInputStream( path )*/resource.getInputStream(), this.charset ) );
 			
 			String name = null;
 			String identifier = null;
@@ -125,20 +131,20 @@ public class LanguageManager {
 			
 			if ( identifier == null ) {
 				
-				LOGGER.warning( "Unable to find language identifier for '" + path + "'" );
+				LOGGER.warning( "Unable to find language identifier for '" + resource.getPath() + "'" );
 				
 			} else {
 				
 				if ( name == null ) name = identifier;
 				
-				Language language = new Language( path, identifier, name );
+				Language language = new Language( resource.getPath(), identifier, name );
 				if ( def ) this.defaultLanguage = language;
 				this.availableLanguages.put( identifier, language );
 				
 			}
 			
 		} catch (IOException e) {
-			LOGGER.log( Level.WARNING, "Unable to preload '" + path + "' language", e );
+			LOGGER.log( Level.WARNING, "Unable to preload '" + resource.getPath() + "' language", e );
 		}
 		
 	}

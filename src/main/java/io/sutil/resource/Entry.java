@@ -3,7 +3,7 @@ package io.sutil.resource;
 import io.sutil.FileUtils;
 import io.sutil.LazyLoadValue;
 
-public abstract class AccessorObject {
+public abstract class Entry {
 
 	/**
 	 * The {@link ResourceAccessor} used to create this resource
@@ -20,7 +20,7 @@ public abstract class AccessorObject {
 	 */
 	protected final LazyLoadValue<String> name;
 	
-	public AccessorObject(ResourceAccessor accessor, String path) {
+	public Entry(ResourceAccessor accessor, String path) {
 		
 		this.accessor = accessor;
 		this.path = path;
@@ -29,7 +29,7 @@ public abstract class AccessorObject {
 			
 			@Override
 			public String create() {
-				return FileUtils.getFileName( AccessorObject.this.path );
+				return FileUtils.getFileName( Entry.this.path );
 			}
 			
 		};
@@ -46,6 +46,17 @@ public abstract class AccessorObject {
 	
 	public String getName() {
 		return this.name.get();
+	}
+	
+	public abstract boolean isDirectory();
+	public abstract Directory toDirectory();
+	public abstract boolean isResource();
+	public abstract Resource toResource();
+	
+	@Override
+	public String toString() {
+		return "Entry at '" + this.path + "'\n" +
+				"\tIn accessor : " + this.accessor;
 	}
 	
 }

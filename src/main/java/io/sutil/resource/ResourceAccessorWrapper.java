@@ -36,9 +36,23 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 		this( owner, null );
 	}
 	
+	public ResourceAccessor getWrappedAccessor() {
+		return this.accessor;
+	}
+	
+	@Override
+	public boolean entryExists(String path) {
+		return this.accessor.entryExists( path );
+	}
+	
 	@Override
 	public boolean resourceExists(String path) {
 		return this.accessor.resourceExists( path );
+	}
+	
+	@Override
+	public boolean directoryExists(String path) {
+		return this.accessor.directoryExists( path );
 	}
 
 	@Override
@@ -47,8 +61,39 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 	}
 
 	@Override
-	public List<String> listResourcePaths(String basePath) {
-		return this.accessor.listResourcePaths( basePath );
+	public Entry getEntry(String path) {
+		return this.accessor.getEntry( path );
+	}
+	
+	@Override
+	public Resource getResource(String path) {
+		return this.accessor.getResource( path );
+	}
+	
+	@Override
+	public Directory getDirectory(String path) {
+		return this.accessor.getDirectory( path );
+	}
+
+	@Override
+	public List<Entry> listEntries(String path) {
+		return this.accessor.listEntries( path );
+	}
+	
+	@Override
+	public List<Resource> listResources(String path) {
+		return this.accessor.listResources( path );
+	}
+	
+	@Override
+	public List<Directory> listDirectories(String path) {
+		return this.accessor.listDirectories( path );
+	}
+	
+	@Override
+	public String toString() {
+		return "Resource Accessor Wrapper.\n" +
+				"\tWrapped Accessor : " + this.accessor.toString();
 	}
 
 }
