@@ -53,7 +53,7 @@ public class DirectoryResourceAccessor extends ResourceAccessor {
 
 	@Override
 	public InputStream resourceInputStream(String path) {
-		System.out.println( path );
+		
 		File file = this.getFile( path );
 		if ( !file.isFile() ) return null;
 		
