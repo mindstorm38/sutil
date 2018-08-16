@@ -41,6 +41,11 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 	}
 	
 	@Override
+	public String getFullPath(String path) {
+		return this.accessor.getFullPath( path );
+	}
+	
+	@Override
 	public boolean entryExists(String path) {
 		return this.accessor.entryExists( path );
 	}
