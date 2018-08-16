@@ -77,25 +77,13 @@ public class LanguageManager {
 		for ( String langFolderPath : this.langsFolderPaths )
 			this.resourceAccessor.listResources( langFolderPath ).forEach( this::parseLanguage );
 		
-		/*
-		for ( String langFolderPath : this.langsFolderPaths ) {
-			
-			for ( String langResPath : this.resourceAccessor.listResourcePaths( langFolderPath ) ) {
-				
-				this.parseLanguage( langResPath );
-				
-			}
-			
-		}
-		*/
-		
 	}
 	
-	private void parseLanguage(/*String path*/Resource resource) {
+	private void parseLanguage(Resource resource) {
 		
 		try {
-			System.out.println(resource.getInputStream());
-			BufferedReader reader = new BufferedReader( new InputStreamReader( /*this.resourceAccessor.resourceInputStream( path )*/resource.getInputStream(), this.charset ) );
+			
+			BufferedReader reader = new BufferedReader( new InputStreamReader( resource.getInputStream(), this.charset ) );
 			
 			String name = null;
 			String identifier = null;
