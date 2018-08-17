@@ -14,7 +14,7 @@ plugins {
 
 group = 'fr.mindstorm38'
 description = 'SUtil (Simple Utility library)'
-version = '1.0.9'
+version = '1.0.10'
 
 compileJava.options.encoding = "UTF-8"
 
