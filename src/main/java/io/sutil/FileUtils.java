@@ -115,6 +115,27 @@ public class FileUtils {
 	}
 	
 	/**
+	 * Get the file path name without extension
+	 * @param path The path
+	 * @return The strict name of the file path
+	 */
+	public static String getFileStrictName(String path) {
+		String filename = getFileName( path );
+		int l = filename.lastIndexOf('.');
+		if ( l == -1 || l == path.length() - 1 ) return filename;
+		return filename.substring( 0, l );
+	}
+	
+	/**
+	 * Get the file name without extension
+	 * @param file The file
+	 * @return The strict name of the file
+	 */
+	public static String getFileStrictName(File file) {
+		return getFileStrictName( file.getAbsolutePath() );
+	}
+	
+	/**
 	 * Simplify a path by resolving relative names
 	 * @param path Path to simplify
 	 * @return Simplified string path
