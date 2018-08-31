@@ -34,6 +34,22 @@ public class CollectionUtils {
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <E> E[] arrayConcat(E[] arr1, E[] arr2, Class<E> clazz) {
+		
+		try {
+			
+			E[] arr = (E[]) Array.newInstance( clazz, arr1.length + arr2.length );
+			System.arraycopy( arr1, 0, arr, 0, arr1.length );
+			System.arraycopy( arr2, arr1.length, arr, 0, arr2.length );
+			return arr;
+			
+		} catch (NegativeArraySizeException e) {
+			return null;
+		}
+		
+	}
+	
 	public static String[] arrayStringConcat(String[] arr1, String...arr2) {
 		String[] array = new String[ arr1.length + arr2.length ];
 		System.arraycopy( arr1, 0, array, 0, arr1.length );
