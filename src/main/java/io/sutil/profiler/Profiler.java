@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import io.sutil.LoggerUtils;
+import io.sutil.tree.CharTree;
 
 public class Profiler {
+	
+	// Class \\
 	
 	private final Map<String, ProfilerSection> sections;
 	private final List<Long> times;
@@ -34,7 +37,7 @@ public class Profiler {
 		if ( this.enabled ) {
 			
 			ProfilerSection section = new ProfilerSection( this.currentSection, identifier );
-			if ( this.currentSection != null ) this.currentSection.childrenSections.add( section );
+			if ( this.currentSection != null ) this.currentSection.getChildrenSections().add( section );
 			this.currentSection = section;
 			this.sections.put( section.toString(), section );
 			this.times.add( System.nanoTime() );
@@ -49,13 +52,13 @@ public class Profiler {
 			
 			long now = System.nanoTime();
 			long start = this.times.remove( this.times.size() - 1 );
+			long total = now - start;
 			
-			this.currentSection.time += now - start;
-			this.currentSection.count++;
+			this.currentSection.addEntry( total );
 			
-			if ( this.currentSection.time > 100000000L ) {
+			if ( total > 100000000L ) {
 				
-				LoggerUtils.LOGGER.warning( "Something's take too long ! '" + this.currentSection.toString() + "' took " + ( (double) this.currentSection.time / 1000000.0 ) + " ms." );
+				LoggerUtils.LOGGER.warning( "Something's take too long ! '" + this.currentSection.toString() + "' took " + ( (double) total / 1000000.0 ) + " ms." );
 				
 			}
 			
@@ -74,6 +77,18 @@ public class Profiler {
 	
 	public ProfilerSection getSection(String identifier) {
 		return this.sections.get( identifier );
+	}
+	
+	public String getSummaryString() {
+		
+		CharTree tree = new CharTree();
+		
+		for ( ProfilerSection section : this.sections.values() )
+			if ( section.getParentSection() == null )
+				tree.addItem( section.createCharTreeItem() );
+		
+		return tree.toString();
+		
 	}
 	
 }
