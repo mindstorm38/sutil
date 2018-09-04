@@ -36,10 +36,17 @@ public class Profiler {
 		
 		if ( this.enabled ) {
 			
-			ProfilerSection section = new ProfilerSection( this.currentSection, identifier );
-			if ( this.currentSection != null ) this.currentSection.getChildrenSections().add( section );
+			ProfilerSection section = this.sections.get( ProfilerSection.repr( this.currentSection, identifier ) );
+			
+			if ( section == null ) {
+				
+				section = new ProfilerSection( this.currentSection, identifier );
+				if ( this.currentSection != null ) this.currentSection.getChildrenSections().add( section );
+				this.sections.put( section.toString(), section );
+				
+			}
+			
 			this.currentSection = section;
-			this.sections.put( section.toString(), section );
 			this.times.add( System.nanoTime() );
 			
 		}

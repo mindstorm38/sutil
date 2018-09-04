@@ -66,7 +66,7 @@ public class ProfilerSection {
 	}
 	
 	public double getLastTimeMillis() {
-		return (double) this.timesBuffer[ 0 ] / 10000.0;
+		return (double) this.timesBuffer[ 0 ] / 1000000.0;
 	}
 	
 	public double getAverageTimeMillis() {
@@ -74,7 +74,7 @@ public class ProfilerSection {
 		double total = 0.0;
 		
 		for ( int i = 0; i < BUFFER_LENGTH; i++ )
-			total += (double) this.timesBuffer[ i ] / 10000.0;
+			total += (double) this.timesBuffer[ i ] / 1000000.0;
 		
 		return total / BUFFER_LENGTH;
 		
@@ -85,7 +85,11 @@ public class ProfilerSection {
 	}
 	
 	public String repr() {
-		return ( this.parentSection == null ? "" : ( this.parentSection.toString() + "." ) ) + this.identifier;
+		return repr( this.parentSection, this.identifier );
+	}
+	
+	public static String repr(ProfilerSection section, String identifier) {
+		return ( section == null ? "" : section.toString() + "." ) + identifier;
 	}
 	
 	@Override
