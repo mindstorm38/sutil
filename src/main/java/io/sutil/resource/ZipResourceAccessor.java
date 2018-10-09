@@ -84,16 +84,16 @@ public class ZipResourceAccessor extends ResourceAccessor {
 	}
 
 	@Override
-	public List<Entry> listEntries(String path) {
+	public List<Entry> listEntries(String rawPath) {
 		
-		path = BaseDirectory.formatDirectoryPath( path );
+		rawPath = BaseDirectory.formatDirectoryPath( rawPath );
 		
-		if ( !this.directoryExists( path ) )
+		if ( !this.directoryExists( rawPath ) )
 			return null; // Return null if path don't point to a directory
 		
 		List<Entry> entries = new ArrayList<>();
 		
-		path = this.getFullPath( path );
+		String path = this.getFullPath( rawPath );
 		int pathLength = path.length();
 		
 		ZipEntry zipEntry;
@@ -114,7 +114,7 @@ public class ZipResourceAccessor extends ResourceAccessor {
 			sepIndex = zipEntryName.indexOf( separator );
 			if ( sepIndex != -1 && sepIndex != ( zipEntryName.length() - 1 ) ) continue;
 			
-			zipEntryName = path + zipEntryName;
+			zipEntryName = rawPath + zipEntryName;
 			
 			if ( zipEntry.isDirectory() )
 				entries.add( new Directory( this, zipEntryName ) );
