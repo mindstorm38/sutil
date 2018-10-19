@@ -44,6 +44,13 @@ public class Token {
 		return this.content.equals( content );
 	}
 	
+	public boolean has(String[] contentList) {
+		for ( String content : contentList )
+			if ( this.content.equals( content ) )
+				return true;
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		return this.type.name() + "[\"" + StringUtils.escapeLineChars( this.content ) + "\"]";
