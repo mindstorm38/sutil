@@ -34,6 +34,13 @@ public class CollectionUtils {
 		return false;
 	}
 	
+	public static boolean arrayContainsChar(char[] arr, char c) {
+		for ( char ac : arr ) 
+			if ( ac == c )
+				return true;
+		return false;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <E> E[] arrayConcat(E[] arr1, E[] arr2, Class<E> clazz) {
 		

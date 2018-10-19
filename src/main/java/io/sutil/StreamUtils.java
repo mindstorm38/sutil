@@ -5,6 +5,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Scanner;
 
 public class StreamUtils {
 
@@ -71,6 +72,19 @@ public class StreamUtils {
 	 */
 	public static byte[] getStreamByteArraySafe(InputStream stream) {
 		try { return getStreamByteArray( stream ); } catch (IOException e) { return null; }
+	}
+	
+	/**
+	 * Convert a stream to a string with a specified charset
+	 * @param stream The stream to convert
+	 * @param charset The charset used to decode stream bytes
+	 * @return The string converted from stream bytes
+	 */
+	public static String getStreamString(InputStream stream, String charset) {
+		try ( Scanner s = new Scanner( stream, charset ) ) {
+			s.useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";
+		}
 	}
 	
 }

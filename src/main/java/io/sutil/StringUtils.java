@@ -3,6 +3,7 @@ package io.sutil;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 	
@@ -66,6 +67,14 @@ public class StringUtils {
 	
 	public static byte[] getStringBytesZeroFilled(String str, int length) {
 		return getStringBytesZeroFilled( str, Charset.defaultCharset(), length );
+	}
+	
+	public static String escapeLineChars(String str) {
+		return str.replace( "\n", "\\n" );
+	}
+	
+	public static String removeLeadingChars(String str, char c) {
+		return str.replaceAll( "^" + Pattern.quote( Character.toString( c ) ) + "+\\B", "" );
 	}
 	
 }
