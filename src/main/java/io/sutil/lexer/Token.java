@@ -53,7 +53,7 @@ public class Token {
 	
 	@Override
 	public String toString() {
-		return this.type.name() + "[\"" + StringUtils.escapeLineChars( this.content ) + "\"]";
+		return this.type.name() + "[\"" + StringUtils.escapeLineChars( this.content ) + "\"] at " + this.position.toString();
 	}
 	
 }
