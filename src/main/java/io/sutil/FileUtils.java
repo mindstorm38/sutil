@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,6 +39,31 @@ public class FileUtils {
 		
 		return new File( path );
 		
+	}
+	
+	/**
+	 * Get class running path, like running JAR path or <code>bin</code> directory for a Eclipse Java IDE project
+	 * @param clazz The class
+	 * @return The running path of the class
+	 */
+	public static String getClassRunningPath(Class<?> clazz) {
+		
+		try {
+			return clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException("Can't get the storage path of this class");
+		}
+		
+	}
+	
+	/**
+	 * Get class running file, see {@link #getClassRunningPath(Class)}
+	 * @param clazz The class
+	 * @return The running file of the class
+	 * @see #getClassRunningPath(Class)
+	 */
+	public static File getClassRunningFile(Class<?> clazz) {
+		return new File( getClassRunningPath( clazz ) );
 	}
 
 	/**

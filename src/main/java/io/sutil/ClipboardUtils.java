@@ -7,7 +7,7 @@ import java.awt.datatransfer.Transferable;
 
 public class ClipboardUtils {
 
-public static String getClipboardString() {
+	public static String getClipboardString() {
 		
 		try {
 			
