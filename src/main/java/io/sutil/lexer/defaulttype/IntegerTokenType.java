@@ -29,6 +29,10 @@ public class IntegerTokenType extends TokenType {
 		this( "INTEGER" );
 	}
 	
+	public int getDefaultBase() {
+		return 10;
+	}
+	
 	public int getBase(char c) {
 		switch ( c ) {
 			case 'b': return 2;
@@ -50,11 +54,16 @@ public class IntegerTokenType extends TokenType {
 	@Override
 	public TokenResult decode(String input, int index, char first) {
 		
-		if ( first != '0' && !CollectionUtils.arrayContainsChar( VALID_DECIMAL_DIGITS, first ) )
+		boolean signchar = ( first == '+' || first == '-' );
+		boolean negate = signchar ? first == '-' : false;
+		
+		if ( signchar )
+			first = input.charAt( ++index );
+		
+		if ( first != '0' && !CollectionUtils.arrayContainsChar( this.getBaseDigits( this.getDefaultBase() ), first ) )
 			return null;
 		
-		int lengthRead = 0;
-		
+		int lengthRead = signchar ? 1 : 0;
 		int base = 0;
 		
 		if ( first == '0' ) {
@@ -70,7 +79,7 @@ public class IntegerTokenType extends TokenType {
 			
 		}
 		
-		if ( base == 0 ) base = 10;
+		if ( base == 0 ) base = this.getDefaultBase();
 		
 		char[] digits = this.getBaseDigits( base );
 		if ( digits == null ) return null;
@@ -81,7 +90,7 @@ public class IntegerTokenType extends TokenType {
 			c = input.charAt( i );
 			
 			if ( !CollectionUtils.arrayContainsChar( digits, c ) )
-				return new TokenResult( base + " " + StringUtils.removeLeadingChars( input.substring( index, i ), '0' ), lengthRead );
+				return new TokenResult( base + " " + ( negate ? "-" : "+" ) + StringUtils.removeLeadingChars( input.substring( index, i ), '0' ), lengthRead );
 			
 			lengthRead++;
 			
