@@ -33,14 +33,12 @@ public class IdentifierTokenType extends TokenType {
 		
 		index++;
 		
-		for ( int i = index; i < input.length(); i++ ) {
+		for ( int i = index; ; i++ ) {
 			
-			if ( !CollectionUtils.arrayContainsChar( this.getValidChars(), input.charAt( i ) ) )
+			if ( i >= input.length() || !CollectionUtils.arrayContainsChar( this.getValidChars(), input.charAt( i ) ) )
 				return new TokenResult( input.substring( index - 1, i ), i - index + 1 );
 			
 		}
-		
-		return null;
 		
 	}
 
