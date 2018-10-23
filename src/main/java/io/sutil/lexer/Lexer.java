@@ -63,9 +63,10 @@ public class Lexer {
 		List<Integer> lines = new ArrayList<>();
 		for ( int i = 0; i < input.length(); i++ ) {
 			if ( input.charAt( i ) == '\n' ) {
-				lines.add( i + 1 );
+				lines.add( i );
 			}
 		}
+		lines.add( input.length() );
 		
 		for ( int i = 0; i < input.length(); ) {
 			
@@ -101,7 +102,9 @@ public class Lexer {
 						
 					}
 				
-				} catch (IndexOutOfBoundsException e) {}
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
 				
 			}
 			
@@ -114,16 +117,15 @@ public class Lexer {
 	}
 	
 	public static int getLine(List<Integer> lines, int index) {
-		for ( int i = 0; i < lines.size(); i++ ) {
-			if ( lines.get( i ) >= index ) {
+		for ( int i = 0; i < lines.size(); i++ )
+			if ( lines.get( i ) >= index )
 				return i;
-			}
-		}
-		return lines.size() - 1;
+		throw new IllegalStateException("Invalid index " + index + ", can't find a corresponding line");
 	}
 	
 	public static int getRow(List<Integer> lines, int line, int index) {
-		return index - lines.get( line - 1 );
+		int lsi = line == 0 ? 0 : lines.get( line - 1 ) + 1;
+		return index - lsi;
 	}
 	
 }

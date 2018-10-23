@@ -42,7 +42,7 @@ public class TokenResult {
 	
 	@Override
 	public String toString() {
-		return "[\"" + StringUtils.escapeLineChars( this.content ) + "\"](" + this.lengthRead + ")"; 
+		return "[\"" + StringUtils.escapeLineChars( this.content ) + "\"](" + this.lengthRead + ( this.ignore ? ", ignored" : "" ) + ")"; 
 	}
 	
 }
