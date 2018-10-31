@@ -250,4 +250,36 @@ public class FileUtils {
 		return getPathHierarchyLevel( file.toPath() );
 	}
 	
+	/**
+	 * <b>/!\ WARNING /!\</b> Delete all contents of a directory <b>/!\ IRREVERSIBLE/!\</b>
+	 * @param dir The directory to delete the content in
+	 */
+	public static void deleteDirectoryContent(File dir) {
+		
+	    File[] files = dir.listFiles();
+	    
+	    if ( files != null ) {
+	    	
+	        for ( File f : files ) {
+	        	
+	            if ( f.isDirectory() ) deleteDirectory( f );
+	            else f.delete();
+	            
+	        }
+	        
+	    }
+	    
+	}
+	
+	/**
+	 * <b>/!\ WARNING /!\</b> Delete a directory and all its content <b>/!\ IRREVERSIBLE /!\</b>
+	 * @param dir The directory to delete
+	 */
+	public static void deleteDirectory(File dir) {
+		
+		deleteDirectoryContent( dir );
+		dir.delete();
+		
+	}
+	
 }
