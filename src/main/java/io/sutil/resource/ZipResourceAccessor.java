@@ -83,6 +83,7 @@ public class ZipResourceAccessor extends ResourceAccessor {
 		return entry == null ? null : entry.isDirectory() ? new Directory( this, path ) : null;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public List<Entry> listEntries(String rawPath) {
 		

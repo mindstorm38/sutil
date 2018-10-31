@@ -2,7 +2,7 @@ package io.sutil.lexer;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +33,13 @@ public class Lexer {
 		this.types.add( index, type );
 	}
 	
-	public List<Token> lex(File file, String charset) throws FileNotFoundException {
-		return this.lex( new FileInputStream( file ), charset );
+	public List<Token> lex(File file, String charset) throws IOException {
+		try ( InputStream stream = new FileInputStream( file ) ) {
+			return this.lex( stream, charset );
+		}
 	}
 	
-	public List<Token> lex(File file) throws FileNotFoundException {
+	public List<Token> lex(File file) throws IOException {
 		return this.lex( file, DEFAULT_CHARSET );
 	}
 	

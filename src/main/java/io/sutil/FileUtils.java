@@ -99,7 +99,9 @@ public class FileUtils {
 	 */
 	public static byte[] getFileByteArray(File file) throws IOException {
 		if ( file.length() > CollectionUtils.ARRAY_MAX_LENGTH ) throw new IOException();
-		return StreamUtils.getStreamByteArray( new FileInputStream( file ) );
+		try ( InputStream stream = new FileInputStream( file ) ) {
+			return StreamUtils.getStreamByteArray( stream );
+		}
 	}
 	
 	/**
