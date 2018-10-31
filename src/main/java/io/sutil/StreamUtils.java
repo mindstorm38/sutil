@@ -11,6 +11,11 @@ import java.util.function.BiConsumer;
 public class StreamUtils {
 
 	/**
+	 * The default buffer size used in buffered methods
+	 */
+	public static final int DEFAULT_BUFFER_SIZE = 1024;
+	
+	/**
 	 * Safe close a stream, or return <code>null</code> if {@link Closeable#close()} throws an exception
 	 * @param closeable Closeable
 	 */
@@ -86,19 +91,30 @@ public class StreamUtils {
 	/**
 	 * Read an input stream through a buffer of <code>buffersize</code>
 	 * @param stream The input stream to read
-	 * @param consumer The consumer, take in first argument the read length and in seconde argument the byte array of size <code>buffersize</code>
+	 * @param consumer See {@link StandardByteConsumer}
 	 * @param buffersize The buffer size used to read the buffer
 	 * @throws IOException See {@link InputStream#read()}
 	 */
-	public static void readStreamBuffered(InputStream stream, BiConsumer<Integer, byte[]> consumer, int buffersize) throws IOException {
+	public static void readStreamBuffered(InputStream stream, StandardByteConsumer consumer, int buffersize) throws IOException {
 		
 		final byte[] buf = new byte[ buffersize ];
 		int read;
 		
 		while ( ( read = stream.read( buf ) ) > 0 ) {
-			consumer.accept( read, buf );
+			consumer.update( buf, 0, read );
 		}
 		
+	}
+	
+	/**
+	 * Read an input stream through a buffer of {@value #DEFAULT_BUFFER_SIZE}
+	 * @param stream The input stream to read
+	 * @param consumer See {@link StandardByteConsumer}
+	 * @throws IOException See {@link InputStream#read()}
+	 * @see #readStreamBuffered(InputStream, BiConsumer, int)
+	 */
+	public static void readStreamBuffered(InputStream stream, StandardByteConsumer consumer) throws IOException {
+		readStreamBuffered( stream, consumer, DEFAULT_BUFFER_SIZE );
 	}
 	
 }
