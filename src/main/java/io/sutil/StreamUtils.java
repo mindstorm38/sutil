@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 public class StreamUtils {
 
@@ -29,7 +30,6 @@ public class StreamUtils {
 	
 	/**
 	 * Copy an InputStream content to an OutputStream<br>
-	 * This function close the stream at the end of reading if no exception thrown
 	 * @param in The input stream
 	 * @param out The output stream
 	 * @throws IOException See {@link InputStream#read()} and {@link OutputStream#write(byte[], int, int)}
@@ -43,13 +43,10 @@ public class StreamUtils {
 			out.write( buf, 0, read );
 		}
 		
-		safeclose( in );
-		
 	}
 	
 	/**
 	 * Read all bytes from an InputStream and return it in a byte array<br>
-	 * This function close the stream at the end of reading if no exception thrown
 	 * @param stream The input stream
 	 * @return The bytes array retrieved from stream
 	 * @throws IOException See {@link #copyStream(InputStream, OutputStream)}
@@ -65,7 +62,6 @@ public class StreamUtils {
 	
 	/**
 	 * Same as {@link #getStreamByteArray(InputStream)} but return null instead of throwing {@link IOException}<br>
-	 * This function close the stream at the end of reading if no exception throws
 	 * @param stream {@link InputStream} where to read bytes
 	 * @return The bytes array retrieved from stream
 	 * @see #getStreamByteArray(InputStream)
@@ -85,6 +81,24 @@ public class StreamUtils {
 			s.useDelimiter("\\A");
 			return s.hasNext() ? s.next() : "";
 		}
+	}
+	
+	/**
+	 * Read an input stream through a buffer of <code>buffersize</code>
+	 * @param stream The input stream to read
+	 * @param consumer The consumer, take in first argument the read length and in seconde argument the byte array of size <code>buffersize</code>
+	 * @param buffersize The buffer size used to read the buffer
+	 * @throws IOException See {@link InputStream#read()}
+	 */
+	public static void readStreamBuffered(InputStream stream, BiConsumer<Integer, byte[]> consumer, int buffersize) throws IOException {
+		
+		final byte[] buf = new byte[ buffersize ];
+		int read;
+		
+		while ( ( read = stream.read( buf ) ) > 0 ) {
+			consumer.accept( read, buf );
+		}
+		
 	}
 	
 }
