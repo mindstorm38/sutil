@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.CRC32;
 
 /**
  * 
@@ -74,6 +75,19 @@ public class ChecksumUtils {
 	 */
 	public static String getFileSHA256(File file) throws NoSuchAlgorithmException, IOException {
 		return getHexStringFileDigest( file, "SHA-256" );
+	}
+	
+	/**
+	 * Get the CRC-32 checksum value for an array of bytes
+	 * @param bytes The array of bytes
+	 * @return CRC-32 value
+	 */
+	public static long getCRC32(byte[] bytes) {
+		
+		final CRC32 crc = new CRC32();
+		crc.update( bytes );
+		return crc.getValue();
+		
 	}
 	
 }
