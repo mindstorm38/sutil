@@ -12,6 +12,8 @@ public class TextBuilder {
 	
 	public TextBuilder append(Object obj) {
 		
+		if ( obj == null ) obj = "null";
+		
 		if ( obj instanceof Character ) {
 			
 			char[] newData = new char[ data.length + 1 ];
