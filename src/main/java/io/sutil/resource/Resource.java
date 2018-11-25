@@ -1,12 +1,14 @@
 package io.sutil.resource;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 
 import io.sutil.FileUtils;
 import io.sutil.LazyLoadValue;
 import io.sutil.StreamUtils;
 
-public class Resource extends Entry implements AutoCloseable {
+public class Resource extends Entry implements Closeable {
 	
 	/**
 	 * The resource input stream
@@ -66,7 +68,7 @@ public class Resource extends Entry implements AutoCloseable {
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() throws IOException {
 		
 		if ( this.inputStream.loaded() )
 			StreamUtils.safeclose( this.inputStream.get() );
