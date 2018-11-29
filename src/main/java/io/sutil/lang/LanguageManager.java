@@ -74,9 +74,14 @@ public class LanguageManager {
 		
 		this.availableLanguages.clear();
 		
-		for ( String langFolderPath : this.langsFolderPaths )
-			this.resourceAccessor.listResources( langFolderPath ).forEach( this::parseLanguage );
-		
+		for ( String langFolderPath : this.langsFolderPaths ) {
+			
+			List<Resource> resources = this.resourceAccessor.listResources( langFolderPath );
+			
+			if ( resources != null )
+				resources.forEach( this::parseLanguage );
+			
+		}
 	}
 	
 	private void parseLanguage(Resource resource) {
