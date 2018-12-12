@@ -27,12 +27,12 @@ public class IntRange implements Iterable<Integer> {
 
 		@Override
 		public boolean hasNext() {
-			return this.i < IntRange.this.to;
+			return this.i <= IntRange.this.to;
 		}
 
 		@Override
 		public Integer next() {
-			return ++this.i;
+			return this.i++;
 		}
 		
 	}
@@ -41,12 +41,12 @@ public class IntRange implements Iterable<Integer> {
 
 		@Override
 		public boolean hasNext() {
-			return this.i > IntRange.this.to;
+			return this.i >= IntRange.this.to;
 		}
 
 		@Override
 		public Integer next() {
-			return --this.i;
+			return this.i--;
 		}
 		
 	}
