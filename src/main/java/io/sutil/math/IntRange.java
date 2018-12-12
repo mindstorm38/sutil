@@ -13,6 +13,10 @@ public class IntRange implements Iterable<Integer> {
 		
 	}
 	
+	public static IntRange create(int from, int to) {
+		return new IntRange( from, to );
+	}
+	
 	private abstract class RangeItBase implements Iterator<Integer> {
 		
 		protected int i = IntRange.this.from;
