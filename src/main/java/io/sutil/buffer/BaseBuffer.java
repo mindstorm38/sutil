@@ -40,7 +40,7 @@ public abstract class BaseBuffer {
 		
 		this.setByteOrder( order );
 		
-		this.bytes = new byte[0];
+		this.bytes = new byte[capacity];
 		
 	}
 	
