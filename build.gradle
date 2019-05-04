@@ -23,9 +23,14 @@ repositories {
 }
 
 dependencies {
+	testImplementation('org.junit.jupiter:junit-jupiter:5.4.1')
 }
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allJava
+}
+
+test {
+    useJUnitPlatform()
 }
