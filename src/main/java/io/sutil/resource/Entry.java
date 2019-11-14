@@ -6,7 +6,7 @@ import io.sutil.LazyLoadValue;
 public abstract class Entry {
 
 	/**
-	 * The {@link ResourceAccessor} used to create this resource
+	 * The {@link ResourceAccessor} used to acquire this resource
 	 */
 	protected final ResourceAccessor accessor;
 	

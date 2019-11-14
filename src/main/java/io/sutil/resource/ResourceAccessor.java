@@ -37,16 +37,8 @@ public abstract class ResourceAccessor implements BaseDirectory {
 		return BaseDirectory.join( this.baseDirectoryPath, path );
 	}
 	
-	/*
-	public String getFullPath(String path) {
-		return this.baseFolderPath + path;
-	}
-	*/
-	
-	/*
-	public abstract boolean resourceExists(String path);
-	public abstract InputStream resourceInputStream(String path);*/
-	@Deprecated public List<String> listResourcePaths(String basePath) {
+	@Deprecated
+	public List<String> listResourcePaths(String basePath) {
 		return null;
 	}
 	

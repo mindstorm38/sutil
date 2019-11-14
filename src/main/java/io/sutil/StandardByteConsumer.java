@@ -2,7 +2,7 @@ package io.sutil;
 
 /**
  * 
- * A standart byte consumer, some function that take bytes use a function like {@link #update(byte[], int, int)} to update their internal stream.
+ * A standard byte consumer, some function that take bytes use a function like {@link #update(byte[], int, int)} to update their internal stream.
  * 
  * @author Mindstorm38
  *

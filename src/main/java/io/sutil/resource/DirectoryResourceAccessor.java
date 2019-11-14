@@ -36,19 +36,19 @@ public class DirectoryResourceAccessor extends ResourceAccessor {
 	@Override
 	public boolean entryExists(String path) {
 		File file = this.getFile( path );
-		return file == null ? false : file.exists();
+		return file != null && file.exists();
 	}
 	
 	@Override
 	public boolean resourceExists(String path) {
 		File file = this.getFile( path );
-		return file == null ? false : file.isFile();
+		return file != null && file.isFile();
 	}
 	
 	@Override
 	public boolean directoryExists(String path) {
 		File file = this.getFile( path );
-		return file == null ? false : file.isDirectory();
+		return file != null && file.isDirectory();
 	}
 
 	@Override
@@ -77,10 +77,10 @@ public class DirectoryResourceAccessor extends ResourceAccessor {
 		
 		path = BaseDirectory.formatDirectoryPath( path );
 		
-		List<Entry> entries = new ArrayList<>();
-		
 		File directory = this.getFile( path );
 		if ( directory == null || !directory.isDirectory() ) return null;
+		
+		List<Entry> entries = new ArrayList<>();
 		
 		int dirPathLength = this.directory.getAbsolutePath().length() + this.baseDirectoryPath.length() + 1;
 		
