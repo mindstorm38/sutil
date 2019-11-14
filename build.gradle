@@ -2,20 +2,22 @@
 
 	-- SUtil --
 
-	Using Gradle 4.9
+	Java   : 1.8
+	Gradle : 6.0
 
 */
 
 plugins {
-	id 'java-library'
+	id 'java'
 	id 'eclipse'
 }
 
-group = 'fr.mindstorm38'
-description = 'SUtil (Simple Utility library)'
-version = '1.0.13'
+version '1.0.13'
+description 'SUtil (Simple Utility library)'
+group 'fr.mindstorm38'
 
-compileJava.options.encoding = "UTF-8"
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
 	jcenter()
