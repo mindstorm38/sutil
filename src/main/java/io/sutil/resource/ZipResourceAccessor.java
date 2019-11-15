@@ -40,14 +40,14 @@ public class ZipResourceAccessor extends ResourceAccessor {
 	@Override
 	public boolean resourceExists(String path) {
 		ZipEntry entry = this.zip.getEntry( this.getFullPath( path ) );
-		return entry == null ? false : !entry.isDirectory();
+		return entry != null && !entry.isDirectory();
 	}
 
 	@Override
 	public boolean directoryExists(String path) {
 		if ( this.isBaseDir( path ) ) return true;
 		ZipEntry entry = this.zip.getEntry( this.getFullPath( path ) );
-		return entry == null ? false : entry.isDirectory();
+		return entry != null && entry.isDirectory();
 	}
 	
 	@Override
