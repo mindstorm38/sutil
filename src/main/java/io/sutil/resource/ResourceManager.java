@@ -1,8 +1,7 @@
 package io.sutil.resource;
 
 import java.io.InputStream;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  *
@@ -17,24 +16,52 @@ import java.util.ArrayList;
 public class ResourceManager extends ResourceAccessor {
 
 	private final List<ResourceAccessor> accessors;
+	private final Map<String, ResourceAccessor> namespaced;
 	
 	public ResourceManager() {
 		
 		this.accessors = new ArrayList<>();
+		this.namespaced = new HashMap<>();
 		
 	}
 	
-	public void registerAccessor(ResourceAccessor accessor, int at) {
+	/**
+	 * Register a {@link ResourceAccessor} with a namespace and a specific position.
+	 * @param namespace The namespace of the accessor, can be used to specify the accessor
+	 *                  to use in the relative path given {@link BaseDirectory} implemented
+	 *                  methods.
+	 * @param accessor The accessor to register.
+	 * @param at The position, or the priority of the accessor if no namespace is given in
+	 *           {@link BaseDirectory} implemented method. 0 is the highest priority.
+	 * @throws IllegalStateException If their are some problems with parameters or namespace collision.
+	 */
+	public void registerAccessor(String namespace, ResourceAccessor accessor, int at) {
 		
-		if (this.accessors.contains(accessor))
-			throw new RuntimeException("Accessor already registered !");
+		if (namespace == null || namespace.isEmpty())
+			throw new IllegalStateException("Invalid empty or null namespace.");
+		
+		if (this.accessors.contains(Objects.requireNonNull(accessor, "Invalid null resource accessor.")))
+			throw new IllegalStateException("Accessor already registered !");
+		
+		if (this.namespaced.containsKey(namespace))
+			throw new IllegalStateException("Accessor with namespace '" + namespace + "' already registerd.");
 		
 		this.accessors.add(at, accessor);
+		this.namespaced.put(namespace, accessor);
 		
 	}
 	
-	public void registerAccessor(ResourceAccessor accessor) {
-		this.registerAccessor(accessor, this.accessors.size());
+	/**
+	 * Register a {@link ResourceAccessor} with a namespace, same as
+	 * {@link #registerAccessor(String, ResourceAccessor, int)}, but inserting at the last priority.
+	 * @param namespace The namespace of the accessor, can be used to specify the accessor
+	 * 	                to use in the relative path given {@link BaseDirectory} implemented
+	 *                  methods.
+	 * @param accessor The accessor to register.
+	 * @throws IllegalStateException If their are some problems with parameters or namespace collision.
+	 */
+	public void registerAccessor(String namespace, ResourceAccessor accessor) {
+		this.registerAccessor(namespace, accessor, this.accessors.size());
 	}
 	
 	protected static RuntimeException getIncoherentCallError() {
@@ -116,8 +143,10 @@ public class ResourceManager extends ResourceAccessor {
 		
 		final List<Entry> res = new ArrayList<>();
 		
+		List<Entry> l;
 		for (ResourceAccessor ra : this.accessors)
-			res.addAll(ra.listEntries(path));
+			if ((l = ra.listEntries(path)) != null)
+				res.addAll(l);
 		
 		return res;
 		
@@ -128,8 +157,10 @@ public class ResourceManager extends ResourceAccessor {
 		
 		final List<Resource> res = new ArrayList<>();
 		
+		List<Resource> l;
 		for (ResourceAccessor ra : this.accessors)
-			res.addAll(ra.listResources(path));
+			if ((l = ra.listResources(path)) != null)
+				res.addAll(l);
 		
 		return res;
 		
@@ -140,8 +171,10 @@ public class ResourceManager extends ResourceAccessor {
 		
 		final List<Directory> res = new ArrayList<>();
 		
+		List<Directory> l;
 		for (ResourceAccessor ra : this.accessors)
-			res.addAll(ra.listDirectories(path));
+			if ((l = ra.listDirectories(path)) != null)
+				res.addAll(l);
 		
 		return res;
 		

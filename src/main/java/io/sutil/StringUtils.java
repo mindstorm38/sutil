@@ -77,4 +77,17 @@ public class StringUtils {
 		return str.replaceAll( "^" + Pattern.quote( Character.toString( c ) ) + "+\\B", "" );
 	}
 	
+	public static String requireNonNullAndEmpty(String str, String message) {
+		
+		if (str == null || str.isEmpty())
+			throw new NullPointerException(message);
+		
+		return str;
+		
+	}
+	
+	public static String requireNonNullAndEmpty(String str) {
+		return requireNonNullAndEmpty(str, "Empty or null string.");
+	}
+	
 }

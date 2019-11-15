@@ -4,7 +4,7 @@ package io.sutil;
  * 
  * Lazy loadable value holder (<a href="https://en.wikipedia.org/wiki/Lazy_loading">Lazy Loading - Wikipedia</a>)
  * 
- * @author Mindstorm38
+ * @author Théo Rozier (Mindstorm38)
  *
  * @param <T> Value type
  */

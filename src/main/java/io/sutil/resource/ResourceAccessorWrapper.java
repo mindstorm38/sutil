@@ -10,29 +10,15 @@ public class ResourceAccessorWrapper extends ResourceAccessor {
 
 	protected final ResourceAccessor accessor;
 	
-	public ResourceAccessorWrapper(Class<?> clazz, String baseFolderPath) {
-		
-		try {
-			
-			File src = new File( clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() );
-			
-			if ( src.isDirectory() ) {
-				
-				this.accessor = new DirectoryResourceAccessor( src, baseFolderPath );
-				
-			} else {
-				
-				this.accessor = new ZipResourceAccessor( src, baseFolderPath );
-				
-			}
-			
-		} catch (URISyntaxException | IOException e) {
-			throw new IllegalStateException( "Unable to create this RessourceAccessorWrapper", e );
-		}
-		
+	public ResourceAccessorWrapper(File src, String baseFolderPath) {
+		this.accessor = ResourceAccessor.findFileResourceAccessor(src, baseFolderPath);
 	}
 	
-	public ResourceAccessorWrapper(Class<?> owner) {
+	public ResourceAccessorWrapper(Class<?> clazz, String baseFolderPath) throws URISyntaxException {
+		this(new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()), baseFolderPath);
+	}
+	
+	public ResourceAccessorWrapper(Class<?> owner) throws URISyntaxException {
 		this( owner, null );
 	}
 	
