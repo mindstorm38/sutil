@@ -10,6 +10,8 @@ import io.sutil.tree.CharTree;
 
 public class Profiler {
 	
+	public static long WARNING_TIME_LIMIT = 100000000L;
+	
 	// Class \\
 	
 	private final Map<String, ProfilerSection> sections;
@@ -63,7 +65,7 @@ public class Profiler {
 			
 			this.currentSection.addEntry( total );
 			
-			if ( total > 100000000L ) {
+			if ( total > WARNING_TIME_LIMIT ) {
 				
 				LoggerUtils.LOGGER.warning( "Something's take too long ! '" + this.currentSection.toString() + "' took " + ( (double) total / 1000000.0 ) + " ms." );
 				
