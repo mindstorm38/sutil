@@ -4,7 +4,7 @@ package io.sutil.math;
  * 
  * Math helper inspired by the Minecraft class
  * 
- * @author Mindstorm38
+ * @author Theo Rozier
  *
  */
 public class MathHelper {
@@ -15,35 +15,35 @@ public class MathHelper {
 	public static int floor_float_int(float value) {
 		
 		int i = (int) value;
-		return value < (float) i ? i - 1 : i;
+		return value < i ? i - 1 : i;
 		
 	}
 	
 	public static int floor_double_int(double value) {
 		
 		int i = (int) value;
-		return value < (double) i ? i - 1 : i;
+		return value < i ? i - 1 : i;
 		
 	}
 	
 	public static long floor_double_long(double value) {
 		
 		long i = (long) value;
-		return value < (double) i ? i - 1L : i;
+		return value < i ? i - 1L : i;
 		
 	}
 	
 	public static int ceiling_float_int(float value) {
 		
         int i = (int) value;
-        return value > (float) i ? i + 1 : i;
+        return value > i ? i + 1 : i;
         
     }
 
     public static int ceiling_double_int(double value) {
     	
         int i = (int) value;
-        return value > (double) i ? i + 1 : i;
+        return value > i ? i + 1 : i;
         
     }
 
