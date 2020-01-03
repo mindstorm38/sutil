@@ -116,6 +116,11 @@ public class MathHelper {
 		if ( current == last ) return current;
 		return ( ( current - last ) * alpha ) + last;
 	}
+	
+	public static double interpolate(double alpha, double current, double last) {
+		if ( current == last ) return current;
+		return ( ( current - last ) * alpha ) + last;
+	}
     
     public static double roundOff(double n, int decimals) {
     	if ( decimals < 0 ) throw new IndexOutOfBoundsException("Invalid decimal count");
