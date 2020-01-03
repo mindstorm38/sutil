@@ -117,7 +117,7 @@ public class MathHelper {
 		return ( ( current - last ) * alpha ) + last;
 	}
 	
-	public static double interpolate(double alpha, double current, double last) {
+	public static double interpolate(float alpha, double current, double last) {
 		if ( current == last ) return current;
 		return ( ( current - last ) * alpha ) + last;
 	}
