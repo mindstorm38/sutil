@@ -111,7 +111,7 @@ public class StreamUtils {
 	 * @param stream The input stream to read
 	 * @param consumer See {@link StandardByteConsumer}
 	 * @throws IOException See {@link InputStream#read()}
-	 * @see #readStreamBuffered(InputStream, BiConsumer, int)
+	 * @see #readStreamBuffered(InputStream, StandardByteConsumer, int)
 	 */
 	public static void readStreamBuffered(InputStream stream, StandardByteConsumer consumer) throws IOException {
 		readStreamBuffered( stream, consumer, DEFAULT_BUFFER_SIZE );
