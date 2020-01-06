@@ -10,14 +10,17 @@
 plugins {
 	id 'java'
 	id 'eclipse'
+	id 'maven-publish'
+	id 'signing'
 }
 
-version '1.0.14'
-description 'SUtil (Simple Utility library)'
-group 'fr.mindstorm38'
+version "1.0.15"
+description "Simple Utility library for Java"
+group "fr.theorozier"
 
-sourceCompatibility = 1.8
-compileJava.options.encoding = 'UTF-8'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = "UTF-8"
 
 repositories {
 	jcenter()
@@ -28,11 +31,75 @@ dependencies {
 	testImplementation('org.junit.jupiter:junit-jupiter:5.4.1')
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
+java {
+	withSourcesJar()
+	withJavadocJar()
 }
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+	
+	publications {
+		mavenJar(MavenPublication) {
+		
+			from components.java
+			
+			pom {
+			
+				name = "SUtil"
+				description = project.description
+				url = "https://github.com/mindstorm38/sutil"
+				
+				developers {
+					developer {
+						id = "fr.theorozier"
+						name = "Théo Rozier"
+						email = "contact@theorozier.fr"
+						url = "https://github.com/mindstorm38"
+					}
+				}
+				
+				licenses {
+					license {
+						name = "GNU General Public License v3.0"
+						url = "https://opensource.org/licenses/GPL-3.0"
+					}
+				}
+				
+				scm {
+					connection = "scm:git:git://github.com/mindstorm38/sutil.git"
+					developerConnection = "scm:git:ssh://github.com:mindstorm38/sutil.git"
+					url = "https://github.com/mindstorm38/sutil/tree/master"
+				}
+			
+			}
+		
+		}
+	}
+	
+	repositories {
+		maven {
+			
+			credentials {
+				username = ossrhUsername
+				password = ossrhPassword
+			}
+			
+			def releaseRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+			def snapshotRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+			
+			url = project.version.endsWith("SNAPSHOT") ? snapshotRepoUrl : releaseRepoUrl
+			
+		}
+	}
+	
+}
+
+signing {
+	publishing.publications.all {
+		sign it
+	}
 }
