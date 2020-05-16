@@ -20,6 +20,7 @@ import io.sutil.TextBuilder;
  * @param <K> Key type
  * @param <V> Value type
  */
+@Deprecated
 @SuppressWarnings( { "unchecked" } )
 public class Registry<K, V> implements Iterable<Entry<K, V>>, RandomAccess {
 	
