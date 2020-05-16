@@ -3,7 +3,7 @@
 	-- SUtil --
 
 	Java   : 1.8
-	Gradle : 6.0
+	Gradle : 6.1.1
 
 */
 
@@ -14,13 +14,15 @@ plugins {
 	id 'signing'
 }
 
-version "1.1.0"
+version "1.1.1-SNAPSHOT"
 description "Simple Utility library for Java"
 group "fr.theorozier"
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 java.targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = "UTF-8"
+
+def snapshot = project.version.endsWith("SNAPSHOT");
 
 repositories {
 	jcenter()
@@ -91,15 +93,17 @@ publishing {
 			def releaseRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 			def snapshotRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
 			
-			url = project.version.endsWith("SNAPSHOT") ? snapshotRepoUrl : releaseRepoUrl
+			url = snapshot ? snapshotRepoUrl : releaseRepoUrl
 			
 		}
 	}
 	
 }
 
-signing {
-	publishing.publications.all {
-		sign it
+if (!snapshot) {
+	signing {
+		publishing.publications.all {
+			sign it
+		}
 	}
 }
