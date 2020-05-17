@@ -33,7 +33,7 @@ public class GrowingObjectPool<T> extends ObjectPool<T> {
 	}
 	
 	@Override
-	public PoolObject acquire() throws NoSuchElementException {
+	public PoolObject safeAcquire() throws NoSuchElementException {
 		
 		if (this.hasLimit() && this.acquired >= this.limit) {
 			throw new NoSuchElementException("No more object in this pool (limited to " + this.limit + " objects).");
@@ -48,7 +48,7 @@ public class GrowingObjectPool<T> extends ObjectPool<T> {
 			}
 			
 			++this.acquired;
-			return obj.setAcquired(true);
+			return obj;
 			
 		}
 		
@@ -57,8 +57,8 @@ public class GrowingObjectPool<T> extends ObjectPool<T> {
 	
 	@Override
 	protected void safeRelease(PoolObject obj) {
-		--this.acquired;
 		this.pool.add(obj);
+		--this.acquired;
 	}
 	
 	@Override

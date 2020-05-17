@@ -13,23 +13,24 @@ public class FixedObjectPool<T> extends ObjectPool<T> {
 		
 		this.pool = new ArrayDeque<>();
 		
-		for (int i = 0; i < poolSize; ++i)
+		for (int i = 0; i < poolSize; ++i) {
 			this.pool.add(this.new PoolObject(poolProvider.get()));
+		}
 		
 	}
 	
 	@Override
-	public PoolObject acquire() throws NoSuchElementException {
+	public PoolObject safeAcquire() throws NoSuchElementException {
 		if (this.pool.isEmpty()) {
 			throw new NoSuchElementException("No more object in this pool.");
 		} else {
-			return this.pool.poll().setAcquired(true);
+			return this.pool.poll();
 		}
 	}
 	
 	@Override
 	protected void safeRelease(PoolObject obj) {
-		this.pool.add(obj.setAcquired(false));
+		this.pool.add(obj);
 	}
 	
 	@Override

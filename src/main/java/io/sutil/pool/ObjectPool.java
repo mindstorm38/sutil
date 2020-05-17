@@ -5,34 +5,72 @@ import java.util.function.Supplier;
 
 public abstract class ObjectPool<T> {
 	
+	private boolean sync = false;
+	
+	public ObjectPool<T> setSynchronized(boolean sync) {
+		this.sync = sync;
+		return this;
+	}
+	
+	public boolean isSynchronized() {
+		return this.sync;
+	}
+	
 	/**
 	 * <p>Acquire an object from this pool.</p>
 	 * <p><i><b>You can call this in a try-for-resource block an the object will be release automatically when leave the block.</b></i></p>
 	 * @return Acquired object.
 	 * @throws NoSuchElementException If no more object can be acquired.
 	 */
-	public abstract PoolObject acquire() throws NoSuchElementException;
+	public final PoolObject acquire() throws NoSuchElementException {
+		if (this.sync) {
+			synchronized (this) {
+				return this.safeAcquire().setAcquired(true);
+			}
+		} else {
+			return this.safeAcquire().setAcquired(true);
+		}
+	}
 	
 	/**
 	 * Release an previously acquired pool object.
 	 * @param obj The pool object belong to this pool.
 	 * @throws IllegalArgumentException If the given object does not belong to this pool.
 	 */
-	public void release(PoolObject obj) throws IllegalArgumentException {
+	public final void release(PoolObject obj) throws IllegalArgumentException {
 		
 		if (obj.getPool() != this) {
 			throw new IllegalArgumentException("This object doesn't belong to this pool.");
 		}
 		
 		if (obj.isAcquired()) {
-			this.safeRelease(obj);
+			
+			if (this.sync) {
+				synchronized (this) {
+					this.safeRelease(obj);
+					obj.setAcquired(false);
+				}
+			} else {
+				this.safeRelease(obj);
+				obj.setAcquired(false);
+			}
+			
 		}
 		
 	}
 	
 	/**
+	 * Protected method called to acquire next object available in the pool. <b>The returned object
+	 * is set to acquired.</b>
+	 * @return The object acquired.
+	 * @throws NoSuchElementException If no more object can be acquired.
+	 */
+	protected abstract PoolObject safeAcquire() throws NoSuchElementException;
+	
+	/**
 	 * Protected method that <i><b>must only be called</b></i> after the obj was checked to
-	 * belong to this pool, and the object is not already acquired.
+	 * belong to this pool, and the object is not already acquired. <b>After this method is called,
+	 * the given object is set to not acquired.</b>
 	 * @param obj The object to release.
 	 */
 	protected abstract void safeRelease(PoolObject obj);
@@ -75,7 +113,7 @@ public abstract class ObjectPool<T> {
 		
 	}
 	
-	private static class SyncObjectPool<T> extends ObjectPool<T> {
+	/*private static class SyncObjectPool<T> extends ObjectPool<T> {
 		
 		private final Object lock = new Object();
 		private final ObjectPool<T> delegate;
@@ -105,6 +143,11 @@ public abstract class ObjectPool<T> {
 		}
 		
 		@Override
+		protected PoolObject safeAcquire() throws NoSuchElementException {
+			return null;
+		}
+		
+		@Override
 		protected void safeRelease(PoolObject obj) {
 			synchronized (this.lock) {
 				this.delegate.safeRelease(obj);
@@ -118,17 +161,17 @@ public abstract class ObjectPool<T> {
 			}
 		}
 		
-	}
+	}*/
 	
 	// Synchronized //
 	
-	public static <T> ObjectPool<T> newSync(ObjectPool<T> notSynced) {
+	/*public static <T> ObjectPool<T> newSync(ObjectPool<T> notSynced) {
 		if (notSynced instanceof SyncObjectPool) {
 			return notSynced;
 		} else {
 			return new SyncObjectPool<>(notSynced);
 		}
-	}
+	}*/
 	
 	// Fixed //
 	
@@ -137,7 +180,7 @@ public abstract class ObjectPool<T> {
 	}
 	
 	public static <T> ObjectPool<T> newSyncFixed(Supplier<T> poolProvider, int count) {
-		return newSync(newFixed(poolProvider, count));
+		return newFixed(poolProvider, count).setSynchronized(true);
 	}
 	
 	// Growing Limited //
@@ -151,11 +194,11 @@ public abstract class ObjectPool<T> {
 	}
 	
 	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
-		return newSync(newGrowingLimited(poolProvider, initialSize, limit));
+		return newGrowingLimited(poolProvider, initialSize, limit).setSynchronized(true);
 	}
 	
 	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int limit) {
-		return newSync(newGrowingLimited(poolProvider, limit));
+		return newGrowingLimited(poolProvider, limit).setSynchronized(true);
 	}
 	
 	// Growing //
