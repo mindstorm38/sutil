@@ -9,7 +9,9 @@ public class FixedObjectPool<T> extends ObjectPool<T> {
 
 	private final Queue<PoolObject> pool;
 	
-	public FixedObjectPool(Supplier<T> poolProvider, int poolSize) {
+	public FixedObjectPool(Supplier<T> poolProvider, int poolSize, boolean sync) {
+		
+		super(sync);
 		
 		this.pool = new ArrayDeque<>();
 		

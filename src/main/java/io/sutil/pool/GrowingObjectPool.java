@@ -12,7 +12,9 @@ public class GrowingObjectPool<T> extends ObjectPool<T> {
 	private final int limit;
 	private int acquired = 0;
 	
-	public GrowingObjectPool(Supplier<T> poolProvider, int initialSize, int limit) {
+	public GrowingObjectPool(Supplier<T> poolProvider, int initialSize, int limit, boolean sync) {
+		
+		super(sync);
 		
 		this.provider = poolProvider;
 		this.pool = new ArrayDeque<>();

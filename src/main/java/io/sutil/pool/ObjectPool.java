@@ -1,19 +1,34 @@
 package io.sutil.pool;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 public abstract class ObjectPool<T> {
 	
-	private boolean sync = false;
+	private final boolean sync;
 	
-	public ObjectPool<T> setSynchronized(boolean sync) {
+	protected final List<PoolObject> objects = new ArrayList<>();
+	private List<PoolObject> unmodifiableObjects = null;
+	
+	public ObjectPool(boolean sync) {
 		this.sync = sync;
-		return this;
 	}
 	
 	public boolean isSynchronized() {
 		return this.sync;
+	}
+	
+	public List<PoolObject> getObjects() {
+		
+		if (this.unmodifiableObjects == null) {
+			this.unmodifiableObjects = Collections.unmodifiableList(this.objects);
+		}
+		
+		return this.unmodifiableObjects;
+		
 	}
 	
 	/**
@@ -87,6 +102,7 @@ public abstract class ObjectPool<T> {
 		
 		PoolObject(T obj) {
 			this.obj = obj;
+			ObjectPool.this.objects.add(this);
 		}
 		
 		public T get() {
@@ -97,7 +113,7 @@ public abstract class ObjectPool<T> {
 			return ObjectPool.this;
 		}
 		
-		protected boolean isAcquired() {
+		public boolean isAcquired() {
 			return this.acquired;
 		}
 		
@@ -113,92 +129,32 @@ public abstract class ObjectPool<T> {
 		
 	}
 	
-	/*private static class SyncObjectPool<T> extends ObjectPool<T> {
-		
-		private final Object lock = new Object();
-		private final ObjectPool<T> delegate;
-		
-		public SyncObjectPool(ObjectPool<T> delegate) {
-			this.delegate = delegate;
-		}
-		
-		@Override
-		public PoolObject acquire() throws NoSuchElementException {
-			synchronized (this.lock) {
-				return this.delegate.acquire();
-			}
-		}
-		
-		@Override
-		public void release(PoolObject obj) throws IllegalArgumentException {
-			
-			if (obj.getPool() != this.delegate) {
-				throw new IllegalArgumentException("This object doesn't belong to this pool.");
-			}
-			
-			if (obj.isAcquired()) {
-				this.safeRelease(obj);
-			}
-			
-		}
-		
-		@Override
-		protected PoolObject safeAcquire() throws NoSuchElementException {
-			return null;
-		}
-		
-		@Override
-		protected void safeRelease(PoolObject obj) {
-			synchronized (this.lock) {
-				this.delegate.safeRelease(obj);
-			}
-		}
-		
-		@Override
-		public boolean hasMore() {
-			synchronized (this.lock) {
-				return this.delegate.hasMore();
-			}
-		}
-		
-	}*/
-	
-	// Synchronized //
-	
-	/*public static <T> ObjectPool<T> newSync(ObjectPool<T> notSynced) {
-		if (notSynced instanceof SyncObjectPool) {
-			return notSynced;
-		} else {
-			return new SyncObjectPool<>(notSynced);
-		}
-	}*/
-	
 	// Fixed //
 	
 	public static <T> ObjectPool<T> newFixed(Supplier<T> poolProvider, int count) {
-		return new FixedObjectPool<>(poolProvider, count);
+		return new FixedObjectPool<>(poolProvider, count, false);
 	}
 	
 	public static <T> ObjectPool<T> newSyncFixed(Supplier<T> poolProvider, int count) {
-		return newFixed(poolProvider, count).setSynchronized(true);
+		return new FixedObjectPool<>(poolProvider, count, true);
 	}
 	
 	// Growing Limited //
 	
 	public static <T> ObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
-		return new GrowingObjectPool<>(poolProvider, initialSize, limit);
+		return new GrowingObjectPool<>(poolProvider, initialSize, limit, false);
 	}
 	
 	public static <T> ObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int limit) {
-		return new GrowingObjectPool<>(poolProvider, 0, limit);
+		return new GrowingObjectPool<>(poolProvider, 0, limit, false);
 	}
 	
 	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
-		return newGrowingLimited(poolProvider, initialSize, limit).setSynchronized(true);
+		return new GrowingObjectPool<>(poolProvider, initialSize, limit, true);
 	}
 	
 	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int limit) {
-		return newGrowingLimited(poolProvider, limit).setSynchronized(true);
+		return new GrowingObjectPool<>(poolProvider, 0, limit, true);
 	}
 	
 	// Growing //
