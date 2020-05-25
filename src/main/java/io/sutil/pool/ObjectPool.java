@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Supplier;
 
 public abstract class ObjectPool<T> {
 	
@@ -127,52 +126,6 @@ public abstract class ObjectPool<T> {
 			ObjectPool.this.release(this);
 		}
 		
-	}
-	
-	// Fixed //
-	
-	public static <T> ObjectPool<T> newFixed(Supplier<T> poolProvider, int count) {
-		return new FixedObjectPool<>(poolProvider, count, false);
-	}
-	
-	public static <T> ObjectPool<T> newSyncFixed(Supplier<T> poolProvider, int count) {
-		return new FixedObjectPool<>(poolProvider, count, true);
-	}
-	
-	// Growing Limited //
-	
-	public static <T> ObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
-		return new GrowingObjectPool<>(poolProvider, initialSize, limit, false);
-	}
-	
-	public static <T> ObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int limit) {
-		return new GrowingObjectPool<>(poolProvider, 0, limit, false);
-	}
-	
-	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
-		return new GrowingObjectPool<>(poolProvider, initialSize, limit, true);
-	}
-	
-	public static <T> ObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int limit) {
-		return new GrowingObjectPool<>(poolProvider, 0, limit, true);
-	}
-	
-	// Growing //
-	
-	public static <T> ObjectPool<T> newGrowing(Supplier<T> poolProvider, int initialSize) {
-		return newGrowingLimited(poolProvider, 0, initialSize);
-	}
-	
-	public static <T> ObjectPool<T> newGrowing(Supplier<T> poolProvider) {
-		return newGrowingLimited(poolProvider, 0);
-	}
-	
-	public static <T> ObjectPool<T> newSyncGrowing(Supplier<T> poolProvider, int initialSize) {
-		return newSyncGrowingLimited(poolProvider, initialSize, 0);
-	}
-	
-	public static <T> ObjectPool<T> newSyncGrowing(Supplier<T> poolProvider) {
-		return newSyncGrowingLimited(poolProvider, 0);
 	}
 
 }

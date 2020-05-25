@@ -68,4 +68,40 @@ public class GrowingObjectPool<T> extends ObjectPool<T> {
 		return !this.hasLimit() || this.acquired < this.limit;
 	}
 	
+	// Growing Limited //
+	
+	public static <T> GrowingObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
+		return new GrowingObjectPool<>(poolProvider, initialSize, limit, false);
+	}
+	
+	public static <T> GrowingObjectPool<T> newGrowingLimited(Supplier<T> poolProvider, int limit) {
+		return new GrowingObjectPool<>(poolProvider, 0, limit, false);
+	}
+	
+	public static <T> GrowingObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int initialSize, int limit) {
+		return new GrowingObjectPool<>(poolProvider, initialSize, limit, true);
+	}
+	
+	public static <T> GrowingObjectPool<T> newSyncGrowingLimited(Supplier<T> poolProvider, int limit) {
+		return new GrowingObjectPool<>(poolProvider, 0, limit, true);
+	}
+	
+	// Growing //
+	
+	public static <T> GrowingObjectPool<T> newGrowing(Supplier<T> poolProvider, int initialSize) {
+		return newGrowingLimited(poolProvider, 0, initialSize);
+	}
+	
+	public static <T> GrowingObjectPool<T> newGrowing(Supplier<T> poolProvider) {
+		return newGrowingLimited(poolProvider, 0);
+	}
+	
+	public static <T> GrowingObjectPool<T> newSyncGrowing(Supplier<T> poolProvider, int initialSize) {
+		return newSyncGrowingLimited(poolProvider, initialSize, 0);
+	}
+	
+	public static <T> GrowingObjectPool<T> newSyncGrowing(Supplier<T> poolProvider) {
+		return newSyncGrowingLimited(poolProvider, 0);
+	}
+	
 }

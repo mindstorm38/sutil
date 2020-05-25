@@ -40,4 +40,14 @@ public class FixedObjectPool<T> extends ObjectPool<T> {
 		return !this.pool.isEmpty();
 	}
 	
+	// Fixed //
+	
+	public static <T> FixedObjectPool<T> newFixed(Supplier<T> poolProvider, int count) {
+		return new FixedObjectPool<>(poolProvider, count, false);
+	}
+	
+	public static <T> FixedObjectPool<T> newSyncFixed(Supplier<T> poolProvider, int count) {
+		return new FixedObjectPool<>(poolProvider, count, true);
+	}
+	
 }
