@@ -57,18 +57,16 @@ public abstract class ObjectPool<T> {
 			throw new IllegalArgumentException("This object doesn't belong to this pool.");
 		}
 		
-		if (obj.isAcquired()) {
-			
-			if (this.sync) {
-				synchronized (this) {
+		if (this.sync) {
+			synchronized (this) {
+				if (obj.isAcquired()) {
 					this.safeRelease(obj);
 					obj.setAcquired(false);
 				}
-			} else {
-				this.safeRelease(obj);
-				obj.setAcquired(false);
 			}
-			
+		} else if (obj.isAcquired()) {
+			this.safeRelease(obj);
+			obj.setAcquired(false);
 		}
 		
 	}
